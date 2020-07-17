@@ -2,7 +2,7 @@
 //  PhDownloader.h
 //  PhDownloader
 //
-//  Created by Petrus on 7/17/20.
+//  Created by Petrus Nguyễn Thái Học on 7/17/20.
 //  Copyright © 2020 Petrus Nguyễn Thái Học. All rights reserved.
 //
 
