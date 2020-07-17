@@ -7,9 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F2AB892708AF2D2825A8F07 /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 396837E84BF1109002DCA428 /* libPods-PhDownloader-PhDownloaderTests.a */; };
+		2A423AA58C37E4880263E99B /* libPods-PhDownloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C8C707DD381C63BCEB01FE /* libPods-PhDownloader.a */; };
 		FA7708F324C1EBCF0038AFBD /* PhDownloader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7708E924C1EBCF0038AFBD /* PhDownloader.framework */; };
 		FA7708F824C1EBCF0038AFBD /* PhDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7708F724C1EBCF0038AFBD /* PhDownloaderTests.swift */; };
 		FA7708FA24C1EBCF0038AFBD /* PhDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = FA7708EC24C1EBCF0038AFBD /* PhDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FA77090824C1F0E30038AFBD /* PhDownloadRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77090324C1F0E30038AFBD /* PhDownloadRequest.swift */; };
+		FA77090924C1F0E30038AFBD /* PhDownloaderOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77090424C1F0E30038AFBD /* PhDownloaderOptions.swift */; };
+		FA77090A24C1F0E30038AFBD /* PhDownloadState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77090524C1F0E30038AFBD /* PhDownloadState.swift */; };
+		FA77090B24C1F0E30038AFBD /* PhDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77090624C1F0E30038AFBD /* PhDownloader.swift */; };
+		FA77090C24C1F0E30038AFBD /* PhDownloadTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA77090724C1F0E30038AFBD /* PhDownloadTask.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +30,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2E55D91FECD0A742451263A7 /* Pods-PhDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader.release.xcconfig"; path = "Target Support Files/Pods-PhDownloader/Pods-PhDownloader.release.xcconfig"; sourceTree = "<group>"; };
+		3447C70BEC29170F2A01D744 /* Pods-PhDownloader-PhDownloaderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader-PhDownloaderTests.release.xcconfig"; path = "Target Support Files/Pods-PhDownloader-PhDownloaderTests/Pods-PhDownloader-PhDownloaderTests.release.xcconfig"; sourceTree = "<group>"; };
+		396837E84BF1109002DCA428 /* libPods-PhDownloader-PhDownloaderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader-PhDownloaderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		77C8C707DD381C63BCEB01FE /* libPods-PhDownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9985C85A5875B05734C851F8 /* Pods-PhDownloader-PhDownloaderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader-PhDownloaderTests.debug.xcconfig"; path = "Target Support Files/Pods-PhDownloader-PhDownloaderTests/Pods-PhDownloader-PhDownloaderTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BE5F5A9AFA59491090CE6F77 /* Pods-PhDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader.debug.xcconfig"; path = "Target Support Files/Pods-PhDownloader/Pods-PhDownloader.debug.xcconfig"; sourceTree = "<group>"; };
 		FA7708E924C1EBCF0038AFBD /* PhDownloader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PhDownloader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA7708EC24C1EBCF0038AFBD /* PhDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhDownloader.h; sourceTree = "<group>"; };
 		FA7708ED24C1EBCF0038AFBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA7708F224C1EBCF0038AFBD /* PhDownloaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PhDownloaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA7708F724C1EBCF0038AFBD /* PhDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhDownloaderTests.swift; sourceTree = "<group>"; };
 		FA7708F924C1EBCF0038AFBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA77090324C1F0E30038AFBD /* PhDownloadRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhDownloadRequest.swift; sourceTree = "<group>"; };
+		FA77090424C1F0E30038AFBD /* PhDownloaderOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhDownloaderOptions.swift; sourceTree = "<group>"; };
+		FA77090524C1F0E30038AFBD /* PhDownloadState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhDownloadState.swift; sourceTree = "<group>"; };
+		FA77090624C1F0E30038AFBD /* PhDownloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhDownloader.swift; sourceTree = "<group>"; };
+		FA77090724C1F0E30038AFBD /* PhDownloadTask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhDownloadTask.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A423AA58C37E4880263E99B /* libPods-PhDownloader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,18 +63,41 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA7708F324C1EBCF0038AFBD /* PhDownloader.framework in Frameworks */,
+				1F2AB892708AF2D2825A8F07 /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		587C19FE5C28CC62DD8ED089 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BE5F5A9AFA59491090CE6F77 /* Pods-PhDownloader.debug.xcconfig */,
+				2E55D91FECD0A742451263A7 /* Pods-PhDownloader.release.xcconfig */,
+				9985C85A5875B05734C851F8 /* Pods-PhDownloader-PhDownloaderTests.debug.xcconfig */,
+				3447C70BEC29170F2A01D744 /* Pods-PhDownloader-PhDownloaderTests.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		784376275BF760FE488051AD /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				77C8C707DD381C63BCEB01FE /* libPods-PhDownloader.a */,
+				396837E84BF1109002DCA428 /* libPods-PhDownloader-PhDownloaderTests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FA7708DF24C1EBCF0038AFBD = {
 			isa = PBXGroup;
 			children = (
 				FA7708EB24C1EBCF0038AFBD /* PhDownloader */,
 				FA7708F624C1EBCF0038AFBD /* PhDownloaderTests */,
 				FA7708EA24C1EBCF0038AFBD /* Products */,
+				587C19FE5C28CC62DD8ED089 /* Pods */,
+				784376275BF760FE488051AD /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +113,11 @@
 		FA7708EB24C1EBCF0038AFBD /* PhDownloader */ = {
 			isa = PBXGroup;
 			children = (
+				FA77090624C1F0E30038AFBD /* PhDownloader.swift */,
+				FA77090424C1F0E30038AFBD /* PhDownloaderOptions.swift */,
+				FA77090324C1F0E30038AFBD /* PhDownloadRequest.swift */,
+				FA77090524C1F0E30038AFBD /* PhDownloadState.swift */,
+				FA77090724C1F0E30038AFBD /* PhDownloadTask.swift */,
 				FA7708EC24C1EBCF0038AFBD /* PhDownloader.h */,
 				FA7708ED24C1EBCF0038AFBD /* Info.plist */,
 			);
@@ -104,6 +151,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA7708FD24C1EBCF0038AFBD /* Build configuration list for PBXNativeTarget "PhDownloader" */;
 			buildPhases = (
+				BAEBBE9839D0456983CE0A3A /* [CP] Check Pods Manifest.lock */,
 				FA7708E424C1EBCF0038AFBD /* Headers */,
 				FA7708E524C1EBCF0038AFBD /* Sources */,
 				FA7708E624C1EBCF0038AFBD /* Frameworks */,
@@ -122,6 +170,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA77090024C1EBCF0038AFBD /* Build configuration list for PBXNativeTarget "PhDownloaderTests" */;
 			buildPhases = (
+				B15BC0D3DBCA009647DA3F4B /* [CP] Check Pods Manifest.lock */,
 				FA7708EE24C1EBCF0038AFBD /* Sources */,
 				FA7708EF24C1EBCF0038AFBD /* Frameworks */,
 				FA7708F024C1EBCF0038AFBD /* Resources */,
@@ -148,6 +197,7 @@
 				TargetAttributes = {
 					FA7708E824C1EBCF0038AFBD = {
 						CreatedOnToolsVersion = 11.5;
+						LastSwiftMigration = 1150;
 					};
 					FA7708F124C1EBCF0038AFBD = {
 						CreatedOnToolsVersion = 11.5;
@@ -190,11 +240,63 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B15BC0D3DBCA009647DA3F4B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhDownloader-PhDownloaderTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		BAEBBE9839D0456983CE0A3A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhDownloader-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FA7708E524C1EBCF0038AFBD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA77090B24C1F0E30038AFBD /* PhDownloader.swift in Sources */,
+				FA77090C24C1F0E30038AFBD /* PhDownloadTask.swift in Sources */,
+				FA77090824C1F0E30038AFBD /* PhDownloadRequest.swift in Sources */,
+				FA77090A24C1F0E30038AFBD /* PhDownloadState.swift in Sources */,
+				FA77090924C1F0E30038AFBD /* PhDownloaderOptions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,7 +441,9 @@
 		};
 		FA7708FE24C1EBCF0038AFBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE5F5A9AFA59491090CE6F77 /* Pods-PhDownloader.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -355,6 +459,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = hoc081098.PhDownloader;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -362,7 +467,9 @@
 		};
 		FA7708FF24C1EBCF0038AFBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2E55D91FECD0A742451263A7 /* Pods-PhDownloader.release.xcconfig */;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -385,7 +492,9 @@
 		};
 		FA77090124C1EBCF0038AFBD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9985C85A5875B05734C851F8 /* Pods-PhDownloader-PhDownloaderTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = PhDownloaderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -402,7 +511,9 @@
 		};
 		FA77090224C1EBCF0038AFBD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3447C70BEC29170F2A01D744 /* Pods-PhDownloader-PhDownloaderTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = PhDownloaderTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
