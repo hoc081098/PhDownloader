@@ -1,3 +1,8 @@
+## 0.4.0 - Jul 18, 2020
+
+*   Add example.
+*   Update dependencies version.
+
 ## 0.3.0 - Jul 17, 2020
 
 *   Making PhDownloadTask's property becomes public.

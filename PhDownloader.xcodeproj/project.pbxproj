@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1F2AB892708AF2D2825A8F07 /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 396837E84BF1109002DCA428 /* libPods-PhDownloader-PhDownloaderTests.a */; };
-		2A423AA58C37E4880263E99B /* libPods-PhDownloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 77C8C707DD381C63BCEB01FE /* libPods-PhDownloader.a */; };
+		5A4A9B52563F61EAAF3BF4CC /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3B8E0208F1B3619676BDBD8 /* libPods-PhDownloader-PhDownloaderTests.a */; };
+		9985D0A4BF78CF2C1562077B /* libPods-PhDownloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59791E931E545568F59E5419 /* libPods-PhDownloader.a */; };
 		FA7708F324C1EBCF0038AFBD /* PhDownloader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7708E924C1EBCF0038AFBD /* PhDownloader.framework */; };
 		FA7708F824C1EBCF0038AFBD /* PhDownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7708F724C1EBCF0038AFBD /* PhDownloaderTests.swift */; };
 		FA7708FA24C1EBCF0038AFBD /* PhDownloader.h in Headers */ = {isa = PBXBuildFile; fileRef = FA7708EC24C1EBCF0038AFBD /* PhDownloader.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -32,10 +32,10 @@
 /* Begin PBXFileReference section */
 		2E55D91FECD0A742451263A7 /* Pods-PhDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader.release.xcconfig"; path = "Target Support Files/Pods-PhDownloader/Pods-PhDownloader.release.xcconfig"; sourceTree = "<group>"; };
 		3447C70BEC29170F2A01D744 /* Pods-PhDownloader-PhDownloaderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader-PhDownloaderTests.release.xcconfig"; path = "Target Support Files/Pods-PhDownloader-PhDownloaderTests/Pods-PhDownloader-PhDownloaderTests.release.xcconfig"; sourceTree = "<group>"; };
-		396837E84BF1109002DCA428 /* libPods-PhDownloader-PhDownloaderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader-PhDownloaderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		77C8C707DD381C63BCEB01FE /* libPods-PhDownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		59791E931E545568F59E5419 /* libPods-PhDownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9985C85A5875B05734C851F8 /* Pods-PhDownloader-PhDownloaderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader-PhDownloaderTests.debug.xcconfig"; path = "Target Support Files/Pods-PhDownloader-PhDownloaderTests/Pods-PhDownloader-PhDownloaderTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE5F5A9AFA59491090CE6F77 /* Pods-PhDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader.debug.xcconfig"; path = "Target Support Files/Pods-PhDownloader/Pods-PhDownloader.debug.xcconfig"; sourceTree = "<group>"; };
+		F3B8E0208F1B3619676BDBD8 /* libPods-PhDownloader-PhDownloaderTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader-PhDownloaderTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA7708E924C1EBCF0038AFBD /* PhDownloader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = PhDownloader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA7708EC24C1EBCF0038AFBD /* PhDownloader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhDownloader.h; sourceTree = "<group>"; };
 		FA7708ED24C1EBCF0038AFBD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -54,7 +54,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A423AA58C37E4880263E99B /* libPods-PhDownloader.a in Frameworks */,
+				9985D0A4BF78CF2C1562077B /* libPods-PhDownloader.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -63,7 +63,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA7708F324C1EBCF0038AFBD /* PhDownloader.framework in Frameworks */,
-				1F2AB892708AF2D2825A8F07 /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */,
+				5A4A9B52563F61EAAF3BF4CC /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,8 +84,8 @@
 		784376275BF760FE488051AD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				77C8C707DD381C63BCEB01FE /* libPods-PhDownloader.a */,
-				396837E84BF1109002DCA428 /* libPods-PhDownloader-PhDownloaderTests.a */,
+				59791E931E545568F59E5419 /* libPods-PhDownloader.a */,
+				F3B8E0208F1B3619676BDBD8 /* libPods-PhDownloader-PhDownloaderTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

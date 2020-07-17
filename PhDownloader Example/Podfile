@@ -1,0 +1,5 @@
+target 'PhDownloader Example' do
+  use_frameworks!
+  
+  pod 'PhDownloader', :path => '../'
+end
