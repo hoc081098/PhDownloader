@@ -1,3 +1,7 @@
+## 0.3.0 - Jul 17, 2020
+
+*   Making PhDownloadTask's property becomes public.
+
 ## 0.2.0 - Jul 17, 2020
 
 *   Fix home page url.
