@@ -22,7 +22,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'RxAlamofire', '~> 5.5.0'
   spec.dependency 'RxSwift', '~> 5.1.1'
   spec.dependency 'RxRelay', '~> 5.1.1'
-  spec.dependency 'Realm', '~> 5.1.0', :modular_headers => true
+  spec.dependency 'Realm', '~> 5.1.0'
   spec.dependency 'RealmSwift', '~> 5.1.0'
   spec.dependency 'RxRealm', '~> 3.0.0'
 end
