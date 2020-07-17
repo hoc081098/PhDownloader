@@ -1,9 +1,7 @@
 Pod::Spec.new do |spec|
   spec.name         = "PhDownloader"
   spec.version      = "0.0.1"
-  spec.summary      = "A short description of PhDownloader."
-  spec.description  = <<-DESC
-                   DESC
+  spec.summary      = "Simple, reactive and functional downloader for iOS Swift with powerful of RxSwift, RxAlamofire"
   spec.homepage     = "ttps://github.com/hoc081098/PhDownloader"
   spec.license      = "MIT (example)"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
