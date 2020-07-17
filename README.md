@@ -37,31 +37,38 @@ let downloader: PhDownloader = PhDownloaderFactory.makeDownloader(
 )
 ```
 
-### Obseve download result (show snackbar, toast, alert)
+### Obseve download result (for showing snackbar, toast, alert, ...)
 ```swift
 downloader
     .downloadResult$
     .subscribe(onNext: { result in
-      switch result {
-      case .success(let request):
-        ...
-      case .failure(let request, let error):
-        ...
-      case .cancelled(let request):
-        ...
-      }
+        switch result {
+        case .success(let request):
+          ...
+        case .failure(let request, let error):
+          ...
+        case .cancelled(let request):
+          ...
+        }
     })
-    .disposed(by: self.disposeBag)
+    .disposed(by: disposeBag)
 ```
 
-### Obseve download state (for update UI)
+### Obseve download state (for updating UI)
 ```swift
 downloader
     .observe(by: ["id1", "id2", "id3"])
     .subscribe(onNext: { tasks in
-      ...
+        ...
     })
-    .disposed(by: self.disposeBag)
+    .disposed(by: disposeBag)
+
+downloader
+    .observe(by: "Request id")
+    .subscribe(onNext: { task in 
+        ...
+    })
+    .disposed(by: disposeBag)
 ```
 
 ### Enqueue, cancel, cancelAll, remove:
@@ -82,22 +89,22 @@ downloader
         )
     )
     .subscribe()
-    .disposed(by: self.disposeBag)
+    .disposed(by: disposeBag)
 
 downloader
     .cancel(by: id)
     .subscribe()
-    .disposed(by: self.disposeBag)
+    .disposed(by: disposeBag)
 
 downloader
     .cancelAll()
     .subscribe()
-    .disposed(by: self.disposeBag)
+    .disposed(by: disposeBag)
     
 downloader
     .remove(identifier: id, deleteFile: true)
     .subscribe()
-    .disposed(by: self.disposeBag)
+    .disposed(by: disposeBag)
 ```
 
 ## License
