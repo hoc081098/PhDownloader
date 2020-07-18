@@ -1,5 +1,5 @@
 # PhDownloader
-Simple, reactive and functional downloader for iOS Swift with powerful of `RxSwift`, `RxAlamofire`
+Simple, reactive and functional downloader for iOS Swift with the power of `RxSwift`, `RxAlamofire`
 
 <!-- [![CI Status](https://img.shields.io/travis/hoc081098/PhDownloader.svg?style=flat)](https://travis-ci.org/hoc081098/PhDownloader) -->
 [![Version](https://img.shields.io/cocoapods/v/PhDownloader.svg?style=flat)](https://cocoapods.org/pods/PhDownloader)
