@@ -81,6 +81,24 @@ public enum PhDownloadResult {
   case success(PhDownloadRequest)
   case cancelled(PhDownloadRequest)
   case failure(PhDownloadRequest, PhDownloaderError)
+
+  /// Returns original request.
+  var request: PhDownloadRequest {
+    switch self {
+    case .success(let request): return request
+    case .cancelled(let request): return request
+    case .failure(let request, _): return request
+    }
+  }
+
+  /// If failure result, returns error.
+  var error: PhDownloaderError? {
+    switch self {
+    case .success: return nil
+    case .cancelled: return nil
+    case .failure(_, let error): return error
+    }
+  }
 }
 
 /// Provide `PhDownloader` from `PhDownloaderOptions`
@@ -447,7 +465,7 @@ final class DownloadTaskEntity: Object {
     case .completed:
       return .completed
     case .failed:
-      return .completed
+      return .failed
     case .cancelled:
       return .cancelled
     }
