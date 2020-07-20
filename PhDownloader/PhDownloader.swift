@@ -43,8 +43,29 @@ public protocol PhDownloader {
 
   /// Delete a download task from database.
   /// If the given task is running, it is canceled as well.
-  /// If the task is completed and `deleteFile` is true, the downloaded file will be deleted.
-  func remove(identifier: String, deleteFile: Bool) -> Completable
+  /// If the task is completed and result from invoking `deleteFile` is true, the downloaded file will be deleted.
+  func remove(identifier: String, deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable
+
+  /// Delete all tasks from database.
+  /// Canceled all running tasks.
+  /// If the task is completed and result from invoking `deleteFile` is true, the downloaded file will be deleted.
+  func removeAll(deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable
+}
+
+extension PhDownloader {
+  /// Delete a download task from database.
+  /// If the given task is running, it is canceled as well.
+  /// If the task is completed, the downloaded file will be deleted.
+  public func remove(identifier: String) -> Completable {
+    self.remove(identifier: identifier) { _ in true }
+  }
+
+  /// Delete all tasks from database.
+  /// Canceled all running tasks.
+  /// If the task is completed, the downloaded file will be deleted.
+  public func removeAll() -> Completable {
+    self.removeAll { _ in true }
+  }
 }
 
 /// It represents downloader errors
@@ -61,6 +82,9 @@ public enum PhDownloaderError: Error, CustomDebugStringConvertible {
   /// Task cannot be cancelled
   case cannotCancel(identifier: String)
 
+  /// Error when deleting file
+  case fileDeletingError(Error)
+
   public var debugDescription: String {
     switch self {
     case .downloadError(let error):
@@ -70,7 +94,9 @@ public enum PhDownloaderError: Error, CustomDebugStringConvertible {
     case .notFound(let identifier):
       return "Not found task with identifier: \(identifier)."
     case .cannotCancel(let identifier):
-      return "Cannot cancel task with identifier: \(identifier). Because state of task is finish (completed, failed or cancelled) or undefined"
+      return "Cannot cancel task with identifier: \(identifier). Because state of task is finish (completed, failed or cancelled) or undefined."
+    case .fileDeletingError(let error):
+      return "File deleting error: \(error)."
     }
   }
 }
@@ -137,22 +163,28 @@ protocol LocalDataSource {
     state: PhDownloadState
   ) -> Completable
 
-  /// Get `Results` by multiple ids
+  /// Get `Results` by multiple ids.
+  /// Executing on main thread.
   func getResults(by ids: Set<String>) throws -> Results<DownloadTaskEntity>
 
-  /// Get `Results` by single id
+  /// Get `Results` by single id.
+  /// Executing on main thread.
   func getResults(by id: String) throws -> Results<DownloadTaskEntity>
 
-  /// Get single task by id
+  /// Get single task by id.
+  /// Executing on main thread.
   func get(by id: String) throws -> DownloadTaskEntity?
 
   /// Mask all enqueued or running tasks as cancelled.
   /// - Returns: Cancelled task ids
   func cancelAll() -> Single<[String]>
 
-  /// Remove task from database
-  /// - Returns: a `Single` that emits File savedDir and fileName or error
-  func remove(by id: String) throws -> (savedDir: URL, fileName: String)
+  /// Remove task from database.
+  /// Executing on main thread.
+  func remove(by id: String) throws -> DownloadTaskEntity
+
+  /// Remove all tasks
+  func removeAll() -> Single<[DownloadTaskEntity]>
 }
 
 extension FileManager {
@@ -160,7 +192,7 @@ extension FileManager {
     let url = FileManager.default
       .urls(for: .documentDirectory, in: .userDomainMask)
       .first!
-      .appendingPathComponent("phDownloader", isDirectory: true)
+      .appendingPathComponent("hoc081098_PhDownloader", isDirectory: true)
 
     if !FileManager.default.fileExists(atPath: url.path) {
       try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
@@ -209,6 +241,8 @@ public protocol RealmAdapter {
   func refresh() -> Bool
 
   func object<Element: Object, KeyType>(ofType type: Element.Type, forPrimaryKey key: KeyType) -> Element?
+
+  func deleteAll()
 }
 
 extension Realm: RealmAdapter { }
@@ -314,19 +348,37 @@ final class RealLocalDataSource: LocalDataSource {
   }
 
   func getResults(by ids: Set<String>) throws -> Results<DownloadTaskEntity> {
-    try self.realmInitializer()
-      .objects(DownloadTaskEntity.self)
-      .filter("SELF.identifier IN %@", ids)
+    MainScheduler.ensureExecutingOnScheduler()
+
+    do {
+      return try self.realmInitializer()
+        .objects(DownloadTaskEntity.self)
+        .filter("SELF.identifier IN %@", ids)
+    } catch {
+      throw PhDownloaderError.databaseError(error)
+    }
   }
 
   func getResults(by id: String) throws -> Results<DownloadTaskEntity> {
-    try self.realmInitializer()
-      .objects(DownloadTaskEntity.self)
-      .filter("SELF.identifier = %@", id)
+    MainScheduler.ensureExecutingOnScheduler()
+
+    do {
+      return try self.realmInitializer()
+        .objects(DownloadTaskEntity.self)
+        .filter("SELF.identifier = %@", id)
+    } catch {
+      throw PhDownloaderError.databaseError(error)
+    }
   }
 
   func get(by id: String) throws -> DownloadTaskEntity? {
-    Self.find(by: id, in: try self.realmInitializer())
+    MainScheduler.ensureExecutingOnScheduler()
+
+    do {
+      return Self.find(by: id, in: try self.realmInitializer())
+    } catch {
+      throw PhDownloaderError.databaseError(error)
+    }
   }
 
   func cancelAll() -> Single<[String]> {
@@ -362,17 +414,50 @@ final class RealLocalDataSource: LocalDataSource {
       .subscribeOn(self.queryScheduler)
   }
 
-  func remove(by id: String) throws -> (savedDir: URL, fileName: String) {
-    let realm = try self.realmInitializer()
+  func remove(by id: String) throws -> DownloadTaskEntity {
+    MainScheduler.ensureExecutingOnScheduler()
 
-    guard let task = Self.find(by: id, in: realm) else { throw PhDownloaderError.notFound(identifier: id) }
-    let tuple = (savedDir: URL(fileURLWithPath: task.savedDir), fileName: task.fileName)
+    do {
+      let realm = try self.realmInitializer()
 
-    try realm.write(withoutNotifying: []) {
-      realm.delete(task)
+      guard let task = Self.find(by: id, in: realm) else { throw PhDownloaderError.notFound(identifier: id) }
+      let copy = DownloadTaskEntity(value: task)
+
+      try realm.write(withoutNotifying: []) {
+        realm.delete(task)
+      }
+
+      return copy
+    } catch let phError as PhDownloaderError {
+      throw phError
+    } catch {
+      throw PhDownloaderError.databaseError(error)
     }
+  }
 
-    return tuple
+  func removeAll() -> Single<[DownloadTaskEntity]> {
+    Single
+      .deferred { () -> Single<[DownloadTaskEntity]> in
+        autoreleasepool {
+          do {
+            let realm = try self.realmInitializer()
+            _ = realm.refresh()
+
+            let entities = Array(
+              realm
+                .objects(DownloadTaskEntity.self)
+                .map { DownloadTaskEntity(value: $0) }
+            )
+
+            try realm.write(withoutNotifying: []) { realm.deleteAll() }
+
+            return .just(entities)
+          } catch {
+            return .error(PhDownloaderError.databaseError(error))
+          }
+        }
+      }
+      .subscribeOn(self.queryScheduler)
   }
 
   private static func find(by id: String, in realm: RealmAdapter) -> DownloadTaskEntity? {
@@ -528,6 +613,18 @@ extension DownloadTaskEntity {
   }
 
   var canDownload: Bool { self.phDownloadState != .cancelled }
+}
+
+func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask) -> Bool) throws {
+  let url = task.request.savedDir.appendingPathComponent(task.request.fileName)
+
+  do {
+    if deleteFile(task), FileManager.default.fileExists(atPath: url.path) {
+      try FileManager.default.removeItem(at: url)
+    }
+  } catch {
+    throw PhDownloaderError.fileDeletingError(error)
+  }
 }
 
 /// The command that enqueues a download request or cancel by identifier
@@ -689,19 +786,15 @@ final class RealDownloader: PhDownloader {
     Single
       .deferred { [dataSource] () -> Single<DownloadTaskEntity> in
         // get task and check can cancel
-        do {
-          guard let task = try dataSource.get(by: identifier) else {
-            return .error(PhDownloaderError.notFound(identifier: identifier))
-          }
-
-          guard task.canCancel else {
-            return .error(PhDownloaderError.cannotCancel(identifier: identifier))
-          }
-
-          return .just(task)
-        } catch {
-          return .error(PhDownloaderError.databaseError(error))
+        guard let task = try dataSource.get(by: identifier) else {
+          return .error(PhDownloaderError.notFound(identifier: identifier))
         }
+
+        guard task.canCancel else {
+          return .error(PhDownloaderError.cannotCancel(identifier: identifier))
+        }
+
+        return .just(task)
       }
       .subscribeOn(Self.concurrentMainScheduler)
       .flatMapCompletable { [dataSource] in dataSource.update(id: $0.identifier, state: .cancelled) }
@@ -713,27 +806,21 @@ extension RealDownloader {
   func observe(by identifier: String) -> Observable<PhDownloadTask?> {
     Observable
       .deferred { [dataSource] () -> Observable<PhDownloadTask?> in
-        do {
-          if let task = try dataSource.get(by: identifier) {
-            return Observable
-              .from(object: task, emitInitialValue: true)
-              .map { .init(from: $0) }
-              .subscribeOn(Self.concurrentMainScheduler)
-          }
-
+        if let task = try dataSource.get(by: identifier) {
           return Observable
-            .collection(
-              from: try dataSource.getResults(by: identifier),
-              synchronousStart: true,
-              on: .main
-            )
-            .map { results in results.first.map { .init(from: $0) } }
-            .subscribeOn(Self.concurrentMainScheduler)
-
-        } catch {
-          return .error(PhDownloaderError.databaseError(error))
+            .from(object: task, emitInitialValue: true)
+            .map { .init(from: $0) }
         }
+
+        return Observable
+          .collection(
+            from: try dataSource.getResults(by: identifier),
+            synchronousStart: true,
+            on: .main
+          )
+          .map { results in results.first.map { .init(from: $0) } }
       }
+      .subscribeOn(Self.concurrentMainScheduler)
       .distinctUntilChanged()
   }
 
@@ -744,24 +831,21 @@ extension RealDownloader {
   func observe<T: Sequence>(by identifiers: T) -> Observable<[String: PhDownloadTask]>
   where T.Element == String
   {
+    Observable
       .deferred { [dataSource] () -> Observable<[String: PhDownloadTask]> in
-        do {
-          return Observable
-            .collection(
-              from: try dataSource.getResults(by: Set(identifiers)),
-              synchronousStart: true,
-              on: .main
-            )
-            .subscribeOn(Self.concurrentMainScheduler)
-            .map { results in
-              let taskById = results.map { ($0.identifier, PhDownloadTask.init(from: $0)) }
-              return Dictionary(uniqueKeysWithValues: taskById)
-            }
-            .distinctUntilChanged()
-        } catch {
-          return .error(PhDownloaderError.databaseError(error))
-        }
-    }
+        Observable
+          .collection(
+            from: try dataSource.getResults(by: Set(identifiers)),
+            synchronousStart: true,
+            on: .main
+          )
+          .map { results in
+            let taskById = results.map { ($0.identifier, PhDownloadTask.init(from: $0)) }
+            return Dictionary(uniqueKeysWithValues: taskById)
+          }
+          .distinctUntilChanged()
+      }
+      .subscribeOn(Self.concurrentMainScheduler)
   }
 }
 
@@ -816,17 +900,14 @@ extension RealDownloader {
 
 // MARK: Remove by identifier
 extension RealDownloader {
-  func remove(identifier: String, deleteFile: Bool) -> Completable {
+  func remove(identifier: String, deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable {
     Completable
       .deferred { [dataSource, commandS] () -> Completable in
         // remove entity from database
-        let (savedDir, fileName) = try dataSource.remove(by: identifier)
+        let entity = try dataSource.remove(by: identifier)
 
         // remove file if needed
-        let url = savedDir.appendingPathComponent(fileName)
-        if deleteFile, FileManager.default.fileExists(atPath: url.path) {
-          try FileManager.default.removeItem(at: url)
-        }
+        try removeFile(of: .init(from: entity), deleteFile)
 
         // send command to cancel downloading
         commandS.accept(.cancel(identifier: identifier))
@@ -834,5 +915,26 @@ extension RealDownloader {
         return .empty()
       }
       .subscribeOn(Self.concurrentMainScheduler)
+  }
+}
+
+extension RealDownloader {
+  func removeAll(deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable {
+    self.dataSource
+      .removeAll()
+      .observeOn(Self.mainScheduler)
+      .flatMapCompletable { [commandS] entites -> Completable in
+          .deferred { () -> Completable in
+            // remove files if needed
+            try entites.forEach { try removeFile(of: .init(from: $0), deleteFile) }
+
+            // send commands to cancel downloading
+            entites
+              .map { Command.cancel(identifier: $0.identifier) }
+              .forEach(commandS.accept)
+
+            return .empty()
+        }
+    }
   }
 }

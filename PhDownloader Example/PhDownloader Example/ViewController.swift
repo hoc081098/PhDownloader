@@ -44,13 +44,18 @@ class ViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
-    self.navigationItem.rightBarButtonItems = [
-        .init(title: "Cancel all", style: .plain, target: self, action: #selector(cancelAll)),
-        .init(title: "Remove", style: .plain, target: self, action: #selector(remove)),
-    ]
-
     self.tableView.dataSource = self
     self.tableView.delegate = self
+
+    self.observeDownloader()
+  }
+
+  func observeDownloader() {
+    print(
+      FileManager.default
+        .urls(for: .documentDirectory, in: .userDomainMask)
+        .first!
+    )
 
     self.downloader
       .downloadResult$
@@ -101,6 +106,13 @@ class ViewController: UIViewController {
       .disposed(by: self.disposeBag)
   }
 
+  @objc func removeAll() {
+    self.downloader
+      .removeAll()
+      .subscribe()
+      .disposed(by: self.disposeBag)
+  }
+
   @objc func remove() {
     let alert = UIAlertController(
       title: "Remove",
@@ -112,7 +124,7 @@ class ViewController: UIViewController {
     alert.addAction(.init(title: "OK", style: .default, handler: { [weak alert, weak self] _ in
       if let id = alert?.textFields?.first?.text, let self = self {
         self.downloader
-          .remove(identifier: id, deleteFile: true)
+          .remove(identifier: id)
           .subscribe()
           .disposed(by: self.disposeBag)
       }
@@ -122,6 +134,36 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
+  func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    let buttonCancelAll = UIButton(type: .system)
+    buttonCancelAll.setTitle("Cancel all", for: .normal)
+    buttonCancelAll.addTarget(self, action: #selector(cancelAll), for: .touchUpInside)
+
+    let buttonRemove = UIButton(type: .system)
+    buttonRemove.setTitle("Remove", for: .normal)
+    buttonRemove.addTarget(self, action: #selector(remove), for: .touchUpInside)
+
+    let buttonRemoveAll = UIButton(type: .system)
+    buttonRemoveAll.setTitle("Remove all", for: .normal)
+    buttonRemoveAll.addTarget(self, action: #selector(removeAll), for: .touchUpInside)
+
+    let header = UIStackView()
+    header.axis = .horizontal
+    header.distribution = .fillEqually
+    header.alignment = .center
+    header.spacing = 16
+    header.addArrangedSubview(buttonCancelAll)
+    header.addArrangedSubview(buttonRemove)
+    header.addArrangedSubview(buttonRemoveAll)
+    header.frame = .init(x: 0, y: 0, width: self.view.frame.width, height: 48)
+    header.backgroundColor = .white
+    return header
+  }
+
+  func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    48
+  }
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     items.count
   }
@@ -131,8 +173,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     let item = self.items[indexPath.row]
 
     cell.textLabel?.text = item.request.url.absoluteString
+    cell.textLabel?.font = .systemFont(ofSize: 13)
+
     cell.detailTextLabel?.text = "\(item.state)"
     cell.detailTextLabel?.textColor = color(for: item.state)
+    cell.detailTextLabel?.font = .systemFont(ofSize: 13)
 
     return cell
   }
@@ -182,7 +227,7 @@ func color(for state: PhDownloadState) -> UIColor {
   case .enqueued:
     return .orange
   case .downloading:
-    return .green
+    return .init(red: 0x00 / 255.0, green: 0xC8 / 255.0, blue: 0x53 / 255.0, alpha: 1)
   case .completed:
     return .blue
   case .failed:
