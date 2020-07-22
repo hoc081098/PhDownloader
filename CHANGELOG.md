@@ -1,3 +1,11 @@
+## 0.6.0 - Jul 22, 2020
+
+*   Fix: wrong `failed` state.
+*   Add: `PhDownloadResult.request` and `PhDownloadResult.error` getters.
+*   Add: `PhDownloader.removeAll` methods
+*   Breaking: `PhDownloader.remove` method now accepts a closure type `@escaping (PhDownloadTask) -> Bool` instead of `Bool` as before.
+*   Update: more docs.
+
 ## 0.5.0 - Jul 18, 2020
 
 *   Update README.md.
