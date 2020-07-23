@@ -102,7 +102,7 @@ downloader
     .disposed(by: disposeBag)
     
 downloader
-    .remove(identifier: id, deleteFile: true)
+    .remove(identifier: id)
     .subscribe()
     .disposed(by: disposeBag)
 ```
