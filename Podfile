@@ -4,7 +4,7 @@ target 'PhDownloader' do
   pod 'Alamofire', '~> 5.1'
   pod 'RxAlamofire', '~> 5.2'
   
-  pod 'RxSwift', '~> 5.1'
+  pod 'RxSwift', '~> 6.0'
   pod 'RxRelay', '~> 5.1'
   
   pod 'Realm', '~> 5.2', :modular_headers => true
