@@ -9,7 +9,7 @@ target 'PhDownloader' do
   
   pod 'Realm', '~> 5.2', :modular_headers => true
   pod 'RealmSwift', '~> 5.2'
-  pod 'RxRealm', '~> 3.1'
+  pod 'RxRealm', '~> 5.0'
 
   target 'PhDownloaderTests' do
   end
