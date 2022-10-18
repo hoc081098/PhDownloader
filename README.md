@@ -1,4 +1,4 @@
-# PhDownloader
+# PhDownloader (Petrus Hoc's Downloader)
 Simple, reactive and functional downloader for iOS Swift with the power of `RxSwift`, `RxAlamofire`
 
 <!-- [![CI Status](https://img.shields.io/travis/hoc081098/PhDownloader.svg?style=flat)](https://travis-ci.org/hoc081098/PhDownloader) -->
