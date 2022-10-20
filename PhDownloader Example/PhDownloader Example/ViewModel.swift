@@ -68,8 +68,6 @@ class ViewModel: ObservableObject {
       .subscribe(
         onNext: { [weak self] tasks in
           guard let self = self else { return }
-          
-          print(">>>", tasks["12"]?.state)
 
           self.items = self.items.map { item in
             var newItem = item

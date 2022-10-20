@@ -287,6 +287,12 @@ final class RealLocalDataSource: LocalDataSource {
 
               if disposable.isDisposed { return }
 
+              guard task.canTransition(to: state) else {
+                print("[PhDownloader] cannot transition from \(task.phDownloadState) to \(state)")
+                obsever(.completed)
+                return
+              }
+
               try realm.write(withoutNotifying: []) {
                 task.update(to: state)
                 task.updatedAt = .init()
@@ -603,7 +609,7 @@ extension PhDownloadTask {
   }
 }
 
-// MARK: DownloadTaskEntity + CanCancel + CanDownload
+// MARK: DownloadTaskEntity + CanCancel + CanDownload + CanTransitionTo
 extension DownloadTaskEntity {
   /// Enqueued or runnning state
   var canCancel: Bool {
@@ -613,6 +619,19 @@ extension DownloadTaskEntity {
   }
 
   var canDownload: Bool { self.phDownloadState != .cancelled }
+
+  func canTransition(to newState: PhDownloadState) -> Bool {
+    if self.phDownloadState == .cancelled {
+      switch newState {
+      case .undefined, .enqueued:
+        return true
+      case .downloading, .completed, .failed, .cancelled:
+        return false
+      }
+    }
+
+    return true
+  }
 }
 
 func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask) -> Bool) throws {
