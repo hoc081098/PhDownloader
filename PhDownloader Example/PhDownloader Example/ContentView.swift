@@ -34,13 +34,27 @@ struct ContentView: View {
   var body: some View {
     NavigationView {
       List {
+        HStack(alignment: .center, spacing: 16) {
+          Button("Cancel all") {
+            self.viewModel.cancelAll()
+          }.buttonStyle(BorderlessButtonStyle())
+          
+          Button("Remove all") {
+            self.viewModel.removeAll()
+          }.buttonStyle(BorderlessButtonStyle())
+        }.frame(maxWidth: .infinity)
+        
+        Spacer().frame(height: 32)
+        
         ForEach(self.viewModel.items, id: \.request.identifier) { item in
           ItemRow(
             item: item,
             onTapItem: { self.viewModel.onTap(item: item) }
           )
         }
-      }.navigationTitle("PhDownloader Example")
+      }
+      .listStyle(.plain)
+      .navigationTitle("PhDownloader Example")
     }
   }
 }

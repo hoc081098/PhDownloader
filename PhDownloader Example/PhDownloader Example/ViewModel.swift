@@ -47,6 +47,22 @@ class ViewModel: ObservableObject {
   private(set) var items: [Item] = ViewModel.genItems()
 
   init() {
+    print("saveDir=\(Self.saveDir)")
+    
+    self.downloader
+      .downloadResult$
+      .subscribe(onNext: {event in
+        switch event {
+        case .success(let request):
+          print("[Result] Success: id=\(request.identifier)")
+        case .cancelled(let request):
+          print("[Result] Cancelled: id=\(request.identifier)")
+        case .failure(let request, let error):
+          print("[Result] Failure: id=\(request.identifier), error=\(error)")
+        }
+      })
+      .disposed(by: self.disposeBag)
+    
     self.downloader
       .observe(by: self.items.map(\.request.identifier))
       .subscribe(
@@ -62,6 +78,26 @@ class ViewModel: ObservableObject {
             return newItem
           }
         }
+      )
+      .disposed(by: self.disposeBag)
+  }
+  
+  func cancelAll() {
+    self.downloader
+      .cancelAll()
+      .subscribe(
+        onCompleted: { print("[Cancel all] Success") },
+        onError: { print("[Cancel all] Failure: error=\($0)") }
+      )
+      .disposed(by: self.disposeBag)
+  }
+  
+  func removeAll() {
+    self.downloader
+      .removeAll()
+      .subscribe(
+        onCompleted: { print("[Cancel all] Success") },
+        onError: { print("[Cancel all] Failure: error=\($0)") }
       )
       .disposed(by: self.disposeBag)
   }
