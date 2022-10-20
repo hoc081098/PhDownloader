@@ -202,7 +202,7 @@ extension FileManager {
   }
 }
 
-func provideRealm() throws -> Realm {
+func provideRealm() throws -> RealmAdapter {
   let fileURL = try FileManager.phDownloaderDirectory().appendingPathComponent("phdownloader_default.realm")
 
   let configuration = Realm.Configuration(
@@ -236,7 +236,7 @@ public protocol RealmAdapter {
 
   func add(_ object: Object, update: Realm.UpdatePolicy)
 
-  func delete(_ object: Object)
+  func delete(_ object: ObjectBase)
 
   func refresh() -> Bool
 
@@ -411,7 +411,7 @@ final class RealLocalDataSource: LocalDataSource {
           }
         }
       }
-      .subscribeOn(self.queryScheduler)
+      .subscribe(on: self.queryScheduler)
   }
 
   func remove(by id: String) throws -> DownloadTaskEntity {
@@ -457,7 +457,7 @@ final class RealLocalDataSource: LocalDataSource {
           }
         }
       }
-      .subscribeOn(self.queryScheduler)
+      .subscribe(on: self.queryScheduler)
   }
 
   private static func find(by id: String, in realm: RealmAdapter) -> DownloadTaskEntity? {
@@ -474,8 +474,8 @@ final class DownloadTaskEntity: Object {
   @objc dynamic var updatedAt: Date = .init()
 
   @objc private dynamic var state: RawState = .undefined
-  private dynamic var bytesWritten = RealmOptional<Int64>()
-  private dynamic var totalBytes = RealmOptional<Int64>()
+  private dynamic var bytesWritten = RealmProperty<Int64?>()
+  private dynamic var totalBytes = RealmProperty<Int64?>()
 
   override class func primaryKey() -> String? { "identifier" }
 
@@ -735,13 +735,13 @@ final class RealDownloader: PhDownloader {
         return RxAlamofire
           .download(urlRequest, to: destination)
           .flatMap { $0.rx.progress() }
-          .observeOn(Self.mainScheduler)
+          .observe(on: Self.mainScheduler)
           .do(onCompleted: { isCompleted = true })
-          .takeUntil(self.cancelCommand(for: request.identifier))
+          .take(until: self.cancelCommand(for: request.identifier))
           .throttle(self.options.throttleProgress, latest: true, scheduler: self.throttleScheduler)
           .distinctUntilChanged()
           .materialize()
-          .observeOn(Self.mainScheduler)
+          .observe(on: Self.mainScheduler)
           .map { (state: $0.asDownloadState(isCompleted), error: $0.error) }
           .do(
             onNext: { (state, error) in
@@ -764,11 +764,11 @@ final class RealDownloader: PhDownloader {
           }
           .asCompletable()
       }
-      .catchError { error in
+      .catch { error in
         print("[PhDownloader] Unhandle error: \(error)")
         return .empty()
       }
-      .subscribeOn(Self.concurrentMainScheduler)
+      .subscribe(on: Self.concurrentMainScheduler)
   }
 
   /// Filter command cancel task that has id equals to `identifierNeedCancel`
@@ -796,7 +796,7 @@ final class RealDownloader: PhDownloader {
 
         return .just(task)
       }
-      .subscribeOn(Self.concurrentMainScheduler)
+      .subscribe(on: Self.concurrentMainScheduler)
       .flatMapCompletable { [dataSource] in dataSource.update(id: $0.identifier, state: .cancelled) }
   }
 }
@@ -820,7 +820,7 @@ extension RealDownloader {
           )
           .map { results in results.first.map { .init(from: $0) } }
       }
-      .subscribeOn(Self.concurrentMainScheduler)
+      .subscribe(on: Self.concurrentMainScheduler)
       .distinctUntilChanged()
   }
 
@@ -845,7 +845,7 @@ extension RealDownloader {
           }
           .distinctUntilChanged()
       }
-      .subscribeOn(Self.concurrentMainScheduler)
+      .subscribe(on: Self.concurrentMainScheduler)
   }
 }
 
@@ -867,7 +867,7 @@ extension RealDownloader {
         savedDir: request.savedDir,
         state: .enqueued
       )
-      .observeOn(Self.mainScheduler)
+      .observe(on: Self.mainScheduler)
       .do(onCompleted: { [commandS] in commandS.accept(.enqueue(request: request)) })
   }
 }
@@ -878,7 +878,7 @@ extension RealDownloader {
     // mask task as cancelled to prevent executing enqueued task
     // and then, send command to cancel downloading task
     self.cancelDownload(identifier)
-      .observeOn(Self.mainScheduler)
+      .observe(on: Self.mainScheduler)
       .do(onCompleted: { [commandS] in commandS.accept(.cancel(identifier: identifier)) })
   }
 }
@@ -888,7 +888,7 @@ extension RealDownloader {
   func cancelAll() -> Completable {
     self.dataSource
       .cancelAll()
-      .observeOn(Self.mainScheduler)
+      .observe(on: Self.mainScheduler)
       .do(onSuccess: { [commandS] ids in
         ids
           .map { Command.cancel(identifier: $0) }
@@ -914,7 +914,7 @@ extension RealDownloader {
 
         return .empty()
       }
-      .subscribeOn(Self.concurrentMainScheduler)
+      .subscribe(on: Self.concurrentMainScheduler)
   }
 }
 
@@ -922,7 +922,7 @@ extension RealDownloader {
   func removeAll(deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable {
     self.dataSource
       .removeAll()
-      .observeOn(Self.mainScheduler)
+      .observe(on: Self.mainScheduler)
       .flatMapCompletable { [commandS] entites -> Completable in
           .deferred { () -> Completable in
             // remove files if needed
