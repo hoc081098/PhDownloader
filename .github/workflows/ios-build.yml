@@ -3,10 +3,10 @@ name: iOS Build CI
 on:
   push:
     branches: [ master ]
-    paths-ignore: [ '**.md', '**.MD' ]
+    paths-ignore: [ '**.md', '**.MD', 'PhDownloader/**' ]
   pull_request:
     branches: [ master ]
-    paths-ignore: [ '**.md', '**.MD' ]
+    paths-ignore: [ '**.md', '**.MD', 'PhDownloader/**' ]
   workflow_dispatch:
 
 
@@ -29,6 +29,13 @@ jobs:
           xcrun simctl create iphone-12-pro "iPhone 12 Pro"
           xcrun simctl boot iphone-12-pro
           open /Applications/Xcode.app/Contents/Developer/Applications/Simulator.app
+
+      - uses: actions/cache@v3
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
 
       - name: Pod install
         run: pod install
