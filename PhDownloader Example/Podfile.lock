@@ -1,29 +1,34 @@
 PODS:
-  - Alamofire (5.2.2)
-  - PhDownloader (0.5.0):
-    - Alamofire (~> 5.1)
-    - Realm (~> 5.2)
-    - RealmSwift (~> 5.2)
-    - RxAlamofire (~> 5.2)
-    - RxRealm (~> 3.1)
-    - RxRelay (~> 5.1)
-    - RxSwift (~> 5.1)
-  - Realm (5.3.1):
-    - Realm/Headers (= 5.3.1)
-  - Realm/Headers (5.3.1)
-  - RealmSwift (5.3.1):
-    - Realm (= 5.3.1)
-  - RxAlamofire (5.6.0):
-    - RxAlamofire/Core (= 5.6.0)
-  - RxAlamofire/Core (5.6.0):
-    - Alamofire (~> 5.1)
-    - RxSwift (~> 5.1)
-  - RxRealm (3.1.0):
-    - RealmSwift (~> 5.2)
-    - RxSwift (~> 5.0)
-  - RxRelay (5.1.1):
-    - RxSwift (~> 5)
-  - RxSwift (5.1.1)
+  - Alamofire (5.6.2)
+  - PhDownloader (0.6.0):
+    - Alamofire (~> 5.6)
+    - Realm (~> 10.32)
+    - RealmSwift (~> 10.32)
+    - RxAlamofire (~> 6.1)
+    - RxRealm (~> 5.0)
+    - RxRelay (~> 6.5)
+    - RxSwift (~> 6.5)
+  - Realm (10.32.0):
+    - Realm/Headers (= 10.32.0)
+  - Realm/Headers (10.32.0)
+  - RealmSwift (10.32.0):
+    - Realm (= 10.32.0)
+  - RxAlamofire (6.1.1):
+    - RxAlamofire/Core (= 6.1.1)
+  - RxAlamofire/Core (6.1.1):
+    - Alamofire (~> 5.4)
+    - RxSwift (~> 6.0)
+  - RxCocoa (6.5.0):
+    - RxRelay (= 6.5.0)
+    - RxSwift (= 6.5.0)
+  - RxRealm (5.0.4):
+    - Realm (~> 10.21)
+    - RealmSwift (~> 10.21)
+    - RxCocoa (~> 6.1)
+    - RxSwift (~> 6.1)
+  - RxRelay (6.5.0):
+    - RxSwift (= 6.5.0)
+  - RxSwift (6.5.0)
 
 DEPENDENCIES:
   - PhDownloader (from `../`)
@@ -34,6 +39,7 @@ SPEC REPOS:
     - Realm
     - RealmSwift
     - RxAlamofire
+    - RxCocoa
     - RxRealm
     - RxRelay
     - RxSwift
@@ -43,15 +49,16 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  Alamofire: 814429acc853c6c54ff123fc3d2ef66803823ce0
-  PhDownloader: eeb3ec703df4f60281d793f63c5871c947242b48
-  Realm: 8ec860dc0c3079f7cab1085d95661a06f162d487
-  RealmSwift: ca9d0df752157befb8c28034301f988a56ce91eb
-  RxAlamofire: f34ddbab56fa2a36f99737f4d4ecc22288a1384f
-  RxRealm: 50e5fe5c1f22518205afbb313fbc5580d73bc586
-  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
-  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
+  Alamofire: d368e1ff8a298e6dde360e35a3e68e6c610e7204
+  PhDownloader: e4ea12d5344accc8ea887e9974437731c8b16d3b
+  Realm: a00e93347b8d26d372c7a82f6c0b08d6536a21c8
+  RealmSwift: fe09c29ca409f8f905fe4086f2a52936193f2e3d
+  RxAlamofire: beb75a1c452d0de225651db4903f5d29d034a620
+  RxCocoa: 94f817b71c07517321eb4f9ad299112ca8af743b
+  RxRealm: 666c8785327fe2fff972a3093b35dc7055c1ca38
+  RxRelay: 1de1523e604c72b6c68feadedd1af3b1b4d0ecbd
+  RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
 
-PODFILE CHECKSUM: 4a7808c6a459bd586088564c7b4af95f8d7fd51a
+PODFILE CHECKSUM: 58aced46ad1c3abe33d8410f38d4fb01bdd20b42
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.11.3

@@ -16,11 +16,11 @@ Pod::Spec.new do |spec|
   spec.requires_arc = true
 
   spec.framework = "Foundation"
-  spec.dependency 'Alamofire', '~> 5.1'
-  spec.dependency 'RxAlamofire', '~> 5.2'
-  spec.dependency 'RxSwift', '~> 5.1'
-  spec.dependency 'RxRelay', '~> 5.1'
-  spec.dependency 'Realm', '~> 5.2'
-  spec.dependency 'RealmSwift', '~> 5.2'
-  spec.dependency 'RxRealm', '~> 3.1'
+  spec.dependency 'Alamofire', '~> 5.6'
+  spec.dependency 'RxAlamofire', '~> 6.1'
+  spec.dependency 'RxSwift', '~> 6.5'
+  spec.dependency 'RxRelay', '~> 6.5'
+  spec.dependency 'Realm', '~> 10.32'
+  spec.dependency 'RealmSwift', '~> 10.32'
+  spec.dependency 'RxRealm', '~> 5.0'
 end
