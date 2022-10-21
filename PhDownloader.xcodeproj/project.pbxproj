@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		35638D512902AD7200575730 /* PhDownloaderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D502902AD7200575730 /* PhDownloaderError.swift */; };
+		35638D532902ADDF00575730 /* PhDownloadResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D522902ADDF00575730 /* PhDownloadResult.swift */; };
+		35638D562902AF5F00575730 /* LocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D552902AF5F00575730 /* LocalDataSource.swift */; };
+		35638D582902AFFF00575730 /* RealLocalDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D572902AFFF00575730 /* RealLocalDataSource.swift */; };
+		35638D5A2902B01D00575730 /* RealmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D592902B01D00575730 /* RealmAdapter.swift */; };
+		35638D5C2902B08800575730 /* DownloadTaskEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D5B2902B08800575730 /* DownloadTaskEntity.swift */; };
+		35638D5E2902B0BB00575730 /* Realm+RealmAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D5D2902B0BB00575730 /* Realm+RealmAdapter.swift */; };
+		35638D602902B0F100575730 /* DownloadTaskEntity+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D5F2902B0F100575730 /* DownloadTaskEntity+Extensions.swift */; };
+		35638D622902B14500575730 /* DIGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D612902B14500575730 /* DIGraph.swift */; };
+		35638D642902B19B00575730 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D632902B19B00575730 /* Utils.swift */; };
+		35638D662902B1ED00575730 /* PhDownloadTask+init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D652902B1ED00575730 /* PhDownloadTask+init.swift */; };
+		35638D6A2902B2CA00575730 /* RealDownloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35638D692902B2CA00575730 /* RealDownloader.swift */; };
 		5A4A9B52563F61EAAF3BF4CC /* libPods-PhDownloader-PhDownloaderTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F3B8E0208F1B3619676BDBD8 /* libPods-PhDownloader-PhDownloaderTests.a */; };
 		9985D0A4BF78CF2C1562077B /* libPods-PhDownloader.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59791E931E545568F59E5419 /* libPods-PhDownloader.a */; };
 		FA7708F324C1EBCF0038AFBD /* PhDownloader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7708E924C1EBCF0038AFBD /* PhDownloader.framework */; };
@@ -32,6 +44,18 @@
 /* Begin PBXFileReference section */
 		2E55D91FECD0A742451263A7 /* Pods-PhDownloader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader.release.xcconfig"; path = "Target Support Files/Pods-PhDownloader/Pods-PhDownloader.release.xcconfig"; sourceTree = "<group>"; };
 		3447C70BEC29170F2A01D744 /* Pods-PhDownloader-PhDownloaderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader-PhDownloaderTests.release.xcconfig"; path = "Target Support Files/Pods-PhDownloader-PhDownloaderTests/Pods-PhDownloader-PhDownloaderTests.release.xcconfig"; sourceTree = "<group>"; };
+		35638D502902AD7200575730 /* PhDownloaderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhDownloaderError.swift; sourceTree = "<group>"; };
+		35638D522902ADDF00575730 /* PhDownloadResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhDownloadResult.swift; sourceTree = "<group>"; };
+		35638D552902AF5F00575730 /* LocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataSource.swift; sourceTree = "<group>"; };
+		35638D572902AFFF00575730 /* RealLocalDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealLocalDataSource.swift; sourceTree = "<group>"; };
+		35638D592902B01D00575730 /* RealmAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmAdapter.swift; sourceTree = "<group>"; };
+		35638D5B2902B08800575730 /* DownloadTaskEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadTaskEntity.swift; sourceTree = "<group>"; };
+		35638D5D2902B0BB00575730 /* Realm+RealmAdapter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Realm+RealmAdapter.swift"; sourceTree = "<group>"; };
+		35638D5F2902B0F100575730 /* DownloadTaskEntity+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DownloadTaskEntity+Extensions.swift"; sourceTree = "<group>"; };
+		35638D612902B14500575730 /* DIGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIGraph.swift; sourceTree = "<group>"; };
+		35638D632902B19B00575730 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		35638D652902B1ED00575730 /* PhDownloadTask+init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhDownloadTask+init.swift"; sourceTree = "<group>"; };
+		35638D692902B2CA00575730 /* RealDownloader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealDownloader.swift; sourceTree = "<group>"; };
 		59791E931E545568F59E5419 /* libPods-PhDownloader.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PhDownloader.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9985C85A5875B05734C851F8 /* Pods-PhDownloader-PhDownloaderTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader-PhDownloaderTests.debug.xcconfig"; path = "Target Support Files/Pods-PhDownloader-PhDownloaderTests/Pods-PhDownloader-PhDownloaderTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BE5F5A9AFA59491090CE6F77 /* Pods-PhDownloader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhDownloader.debug.xcconfig"; path = "Target Support Files/Pods-PhDownloader/Pods-PhDownloader.debug.xcconfig"; sourceTree = "<group>"; };
@@ -70,6 +94,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		35638D542902AF3400575730 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				35638D552902AF5F00575730 /* LocalDataSource.swift */,
+				35638D572902AFFF00575730 /* RealLocalDataSource.swift */,
+				35638D592902B01D00575730 /* RealmAdapter.swift */,
+				35638D5B2902B08800575730 /* DownloadTaskEntity.swift */,
+				35638D5D2902B0BB00575730 /* Realm+RealmAdapter.swift */,
+				35638D5F2902B0F100575730 /* DownloadTaskEntity+Extensions.swift */,
+				35638D612902B14500575730 /* DIGraph.swift */,
+				35638D632902B19B00575730 /* Utils.swift */,
+				35638D652902B1ED00575730 /* PhDownloadTask+init.swift */,
+				35638D692902B2CA00575730 /* RealDownloader.swift */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
 		587C19FE5C28CC62DD8ED089 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -113,6 +154,7 @@
 		FA7708EB24C1EBCF0038AFBD /* PhDownloader */ = {
 			isa = PBXGroup;
 			children = (
+				35638D542902AF3400575730 /* Internal */,
 				FA77090624C1F0E30038AFBD /* PhDownloader.swift */,
 				FA77090424C1F0E30038AFBD /* PhDownloaderOptions.swift */,
 				FA77090324C1F0E30038AFBD /* PhDownloadRequest.swift */,
@@ -120,6 +162,8 @@
 				FA77090724C1F0E30038AFBD /* PhDownloadTask.swift */,
 				FA7708EC24C1EBCF0038AFBD /* PhDownloader.h */,
 				FA7708ED24C1EBCF0038AFBD /* Info.plist */,
+				35638D502902AD7200575730 /* PhDownloaderError.swift */,
+				35638D522902ADDF00575730 /* PhDownloadResult.swift */,
 			);
 			path = PhDownloader;
 			sourceTree = "<group>";
@@ -293,10 +337,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA77090B24C1F0E30038AFBD /* PhDownloader.swift in Sources */,
+				35638D622902B14500575730 /* DIGraph.swift in Sources */,
+				35638D662902B1ED00575730 /* PhDownloadTask+init.swift in Sources */,
+				35638D512902AD7200575730 /* PhDownloaderError.swift in Sources */,
 				FA77090C24C1F0E30038AFBD /* PhDownloadTask.swift in Sources */,
 				FA77090824C1F0E30038AFBD /* PhDownloadRequest.swift in Sources */,
+				35638D642902B19B00575730 /* Utils.swift in Sources */,
 				FA77090A24C1F0E30038AFBD /* PhDownloadState.swift in Sources */,
+				35638D5E2902B0BB00575730 /* Realm+RealmAdapter.swift in Sources */,
+				35638D5A2902B01D00575730 /* RealmAdapter.swift in Sources */,
+				35638D602902B0F100575730 /* DownloadTaskEntity+Extensions.swift in Sources */,
 				FA77090924C1F0E30038AFBD /* PhDownloaderOptions.swift in Sources */,
+				35638D6A2902B2CA00575730 /* RealDownloader.swift in Sources */,
+				35638D562902AF5F00575730 /* LocalDataSource.swift in Sources */,
+				35638D5C2902B08800575730 /* DownloadTaskEntity.swift in Sources */,
+				35638D582902AFFF00575730 /* RealLocalDataSource.swift in Sources */,
+				35638D532902ADDF00575730 /* PhDownloadResult.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

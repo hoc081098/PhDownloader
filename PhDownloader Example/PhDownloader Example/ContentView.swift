@@ -2,7 +2,7 @@
 //  ContentView.swift
 //  PhDownloader Example
 //
-//  Created by Hoc Nguyen T. on 10/19/22.
+//  Created by Petrus Nguyễn Thái Học on 10/19/22.
 //
 
 import SwiftUI
