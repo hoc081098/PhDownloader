@@ -177,7 +177,7 @@ protocol LocalDataSource {
 
   /// Mask all enqueued or running tasks as cancelled.
   /// - Returns: Cancelled task ids
-  func cancelAll() -> Single<[String]>
+  func cancelAll() -> Completable
 
   /// Remove task from database.
   /// Executing on main thread.
@@ -387,9 +387,9 @@ final class RealLocalDataSource: LocalDataSource {
     }
   }
 
-  func cancelAll() -> Single<[String]> {
-    Single
-      .deferred { () -> Single<[String]> in
+  func cancelAll() -> Completable {
+    Completable
+      .deferred {
         autoreleasepool {
           do {
             let realm = try self.realmInitializer()
@@ -402,7 +402,6 @@ final class RealLocalDataSource: LocalDataSource {
                 DownloadTaskEntity.RawState.enqueued.rawValue,
                 DownloadTaskEntity.RawState.downloading.rawValue
               )
-              .toArray()
 
             try realm.write(withoutNotifying: []) {
               entities.forEach { entity in
@@ -411,7 +410,7 @@ final class RealLocalDataSource: LocalDataSource {
               }
             }
 
-            return .just(entities.map { $0.identifier })
+            return .empty()
           } catch {
             return .error(PhDownloaderError.databaseError(error))
           }
@@ -535,6 +534,9 @@ final class DownloadTaskEntity: Object {
     if case .downloading(let bytesWritten, let totalBytes, _) = state {
       self.bytesWritten.value = bytesWritten
       self.totalBytes.value = totalBytes
+    } else {
+      self.bytesWritten.value = nil
+      self.totalBytes.value = nil
     }
   }
 
@@ -650,6 +652,7 @@ func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask) -> Bool)
 enum Command {
   case enqueue(request: PhDownloadRequest)
   case cancel(identifier: String)
+  case cancelAll
 }
 
 // MARK: - RealDownloader
@@ -703,16 +706,16 @@ final class RealDownloader: PhDownloader {
     _ = self
       .dataSource
       .cancelAll()
-      .flatMapCompletable { _ -> Completable in
-          .deferred {
-            let temporaryDirectory = FileManager.default.temporaryDirectory
-            try FileManager.default
-              .contentsOfDirectory(atPath: temporaryDirectory.path)
-              .map { temporaryDirectory.appendingPathComponent($0) }
-              .forEach { try FileManager.default.removeItem(at: $0) }
-            return .empty()
-        }
-      }
+      .andThen(.deferred {
+        let temporaryDirectory = FileManager.default.temporaryDirectory
+         
+        try FileManager.default
+           .contentsOfDirectory(atPath: temporaryDirectory.path)
+           .map { temporaryDirectory.appendingPathComponent($0) }
+           .forEach { try FileManager.default.removeItem(at: $0) }
+         
+        return .empty()
+      })
       .subscribe { event in
         switch event {
         case .completed:
@@ -794,6 +797,9 @@ final class RealDownloader: PhDownloader {
   private func cancelCommand(for identifierNeedCancel: String) -> Observable<Void> {
     self.commandS.compactMap {
       if case .cancel(let identifier) = $0, identifier == identifierNeedCancel {
+        return ()
+      }
+      if case .cancelAll = $0 {
         return ()
       }
       return nil
@@ -908,12 +914,7 @@ extension RealDownloader {
     self.dataSource
       .cancelAll()
       .observe(on: Self.mainScheduler)
-      .do(onSuccess: { [commandS] ids in
-        ids
-          .map { Command.cancel(identifier: $0) }
-          .forEach(commandS.accept)
-      })
-      .asCompletable()
+      .do(onCompleted: { [commandS] in commandS.accept(.cancelAll) })
   }
 }
 
@@ -947,10 +948,8 @@ extension RealDownloader {
             // remove files if needed
             try entites.forEach { try removeFile(of: .init(from: $0), deleteFile) }
 
-            // send commands to cancel downloading
-            entites
-              .map { Command.cancel(identifier: $0.identifier) }
-              .forEach(commandS.accept)
+            // send command to cancel downloading
+            commandS.accept(.cancelAll)
 
             return .empty()
         }
