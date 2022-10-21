@@ -1,7 +1,7 @@
 # PhDownloader (Petrus Hoc's Downloader)
 Simple, reactive and functional downloader for iOS Swift with the power of `RxSwift`, `RxAlamofire`
 
-<!-- [![CI Status](https://img.shields.io/travis/hoc081098/PhDownloader.svg?style=flat)](https://travis-ci.org/hoc081098/PhDownloader) -->
+[![iOS Build CI](https://github.com/hoc081098/PhDownloader/actions/workflows/ios-build.yml/badge.svg)](https://github.com/hoc081098/PhDownloader/actions/workflows/ios-build.yml)
 [![Version](https://img.shields.io/cocoapods/v/PhDownloader.svg?style=flat)](https://cocoapods.org/pods/PhDownloader)
 [![License](https://img.shields.io/cocoapods/l/PhDownloader.svg?style=flat)](https://cocoapods.org/pods/PhDownloader)
 [![Platform](https://img.shields.io/cocoapods/p/PhDownloader.svg?style=flat)](https://cocoapods.org/pods/PhDownloader)
