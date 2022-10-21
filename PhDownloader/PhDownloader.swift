@@ -68,65 +68,6 @@ extension PhDownloader {
   }
 }
 
-/// It represents downloader errors
-public enum PhDownloaderError: Error, CustomDebugStringConvertible {
-  /// Realm error
-  case databaseError(Error)
-
-  /// Download error: No internet connection, file writing error, ...
-  case downloadError(Error)
-
-  /// Not found download task by identifier.
-  case notFound(identifier: String)
-
-  /// Task cannot be cancelled
-  case cannotCancel(identifier: String)
-
-  /// Error when deleting file
-  case fileDeletingError(Error)
-
-  public var debugDescription: String {
-    switch self {
-    case .downloadError(let error):
-      return "Download failure: \(error)."
-    case .databaseError(let error):
-      return "Database error: \(error)."
-    case .notFound(let identifier):
-      return "Not found task with identifier: \(identifier)."
-    case .cannotCancel(let identifier):
-      return "Cannot cancel task with identifier: \(identifier). Because state of task is finish (completed, failed or cancelled) or undefined."
-    case .fileDeletingError(let error):
-      return "File deleting error: \(error)."
-    }
-  }
-}
-
-/// It represents downloader result in three cases: `success`, `cancelled`, `failure`
-/// - Tag: PhDownloadResult
-public enum PhDownloadResult {
-  case success(PhDownloadRequest)
-  case cancelled(PhDownloadRequest)
-  case failure(PhDownloadRequest, PhDownloaderError)
-
-  /// Returns original request.
-  var request: PhDownloadRequest {
-    switch self {
-    case .success(let request): return request
-    case .cancelled(let request): return request
-    case .failure(let request, _): return request
-    }
-  }
-
-  /// If failure result, returns error.
-  var error: PhDownloaderError? {
-    switch self {
-    case .success: return nil
-    case .cancelled: return nil
-    case .failure(_, let error): return error
-    }
-  }
-}
-
 /// Provide `PhDownloader` from `PhDownloaderOptions`
 public enum PhDownloaderFactory {
 
