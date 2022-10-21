@@ -176,7 +176,6 @@ protocol LocalDataSource {
   func get(by id: String) throws -> DownloadTaskEntity?
 
   /// Mask all enqueued or running tasks as cancelled.
-  /// - Returns: Cancelled task ids
   func cancelAll() -> Completable
 
   /// Remove task from database.
