@@ -43,7 +43,6 @@ final internal class RealLocalDataSource: LocalDataSource {
       let disposable = SafeBooleanDisposable()
 
       let item = DispatchWorkItem {
-        print("TODO: \(Thread.current)")
         if disposable.isDisposed { return }
 
         autoreleasepool {
