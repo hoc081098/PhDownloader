@@ -101,7 +101,7 @@ internal final class RealDownloader: PhDownloader {
       .deferred { [downloadResultS, dataSource] () -> Completable in
 
         // check already cancelled before
-        guard let task = try dataSource.get(by: request.identifier), task.canDownload else {
+        guard let task = try dataSource.getOptional(by: request.identifier), task.canDownload else {
           print("[PhDownloader] Task with identifier: \(request.identifier) does not exist or cancelled")
           return .empty()
         }
@@ -174,9 +174,7 @@ internal final class RealDownloader: PhDownloader {
     Single
       .deferred { [dataSource] () -> Single<DownloadTaskEntity> in
         // get task and check can cancel
-        guard let task = try dataSource.get(by: identifier) else {
-          return .error(PhDownloaderError.notFound(identifier: identifier))
-        }
+        let task = try dataSource.get(by: identifier)
 
         guard task.canCancel else {
           return .error(PhDownloaderError.cannotCancel(identifier: identifier))
@@ -194,7 +192,7 @@ extension RealDownloader {
   func observe(by identifier: String) -> Observable<PhDownloadTask?> {
     Observable
       .deferred { [dataSource] () -> Observable<PhDownloadTask?> in
-        if let task = try dataSource.get(by: identifier) {
+        if let task = try dataSource.getOptional(by: identifier) {
           return Observable
             .from(object: task, emitInitialValue: true)
             .map { .init(from: $0) }
@@ -284,20 +282,20 @@ extension RealDownloader {
 // MARK: Remove by identifier
 extension RealDownloader {
   func remove(identifier: String, deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable {
-    Completable
-      .deferred { [dataSource, commandS] () -> Completable in
-        // remove entity from database
-        let entity = try dataSource.remove(by: identifier)
+    self.dataSource
+      .remove(by: identifier)
+      .observe(on: Self.mainScheduler)
+      .flatMapCompletable { [commandS] entity -> Completable in
+        .deferred {
+          // remove file if needed
+          try removeFile(of: .init(from: entity), deleteFile)
 
-        // remove file if needed
-        try removeFile(of: .init(from: entity), deleteFile)
+          // send command to cancel downloading
+          commandS.accept(.cancel(identifier: identifier))
 
-        // send command to cancel downloading
-        commandS.accept(.cancel(identifier: identifier))
-
-        return .empty()
+          return .empty()
+        }
       }
-      .subscribe(on: Self.concurrentMainScheduler)
   }
 }
 

@@ -94,8 +94,8 @@ class ViewModel: ObservableObject {
     self.downloader
       .removeAll()
       .subscribe(
-        onCompleted: { print("[Cancel all] Success") },
-        onError: { print("[Cancel all] Failure: error=\($0)") }
+        onCompleted: { print("[Remove all] Success") },
+        onError: { print("[Remove all] Failure: error=\($0)") }
       )
       .disposed(by: self.disposeBag)
   }

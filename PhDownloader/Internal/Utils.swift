@@ -10,6 +10,22 @@ import Foundation
 import RxSwift
 import RxAlamofire
 
+@available(*, unavailable, message: "Use single argument print(item: Any) instead")
+internal func print(
+  _ items: Any...,
+  separator: String = " ",
+  terminator: String = "\n"
+) { }
+
+internal func print(
+  _ item: @autoclosure () -> Any,
+  terminator: String = "\n"
+) {
+  #if DEBUG
+    Swift.print(item(), terminator: terminator)
+  #endif
+}
+
 internal func percentage(bytesWritten: Int64, totalBytes: Int64) -> Int {
   guard totalBytes > 0 else { return 0 }
   let percent = Double(bytesWritten) / Double(totalBytes)
@@ -48,5 +64,32 @@ internal func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask)
     }
   } catch {
     throw PhDownloaderError.fileDeletingError(error)
+  }
+}
+
+/// Represents a disposable resource that can be checked for disposal status.
+internal final class SafeBooleanDisposable: Cancelable {
+  private var disposed: Bool
+  private let lock = NSLock()
+
+  /// Initializes a new instance of the `BooleanDisposable` class
+  public init() {
+    disposed = false
+  }
+
+  /// - returns: Was resource disposed.
+  public var isDisposed: Bool {
+    lock.lock()
+    defer { lock.unlock() }
+
+    return self.disposed
+  }
+
+  /// Sets the status to disposed, which can be observer through the `isDisposed` property.
+  public func dispose() {
+    lock.lock()
+    defer { lock.unlock() }
+
+    self.disposed = true
   }
 }
