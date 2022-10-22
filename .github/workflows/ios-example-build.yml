@@ -12,9 +12,11 @@ on:
 
 jobs:
   build:
-    name: Build default scheme using any available iPhone simulator
+    name: Build "PhDownloader Example" scheme using any available iPhone simulator
     runs-on: macos-12
-    working-directory: Example
+    defaults:
+      run:
+        working-directory: ./PhDownloader Example
 
     steps:
       - name: Checkout
