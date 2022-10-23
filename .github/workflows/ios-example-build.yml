@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-12
     defaults:
       run:
-        working-directory: ./PhDownloader\ Example
+        working-directory: "PhDownloader Example"
 
     steps:
       - name: Checkout
