@@ -45,6 +45,7 @@ jobs:
 
       - name: Build
         uses: sersoft-gmbh/xcodebuild-action@v2.0.0
+        working-directory: "PhDownloader Example"
         with:
           workspace: "PhDownloader Example.xcworkspace"
           scheme: "PhDownloader Example"
