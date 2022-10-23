@@ -15,14 +15,19 @@ struct Item {
   var state: PhDownloadState
 }
 
-@MainActor
-class ViewModel: ObservableObject {
-  private let disposeBag = DisposeBag()
-
-  private let downloader: PhDownloader = PhDownloaderFactory.makeDownloader(with: .init(
+enum DIGraph {
+  // Singleton
+  static let downloader: PhDownloader = PhDownloaderFactory.makeDownloader(with: .init(
     maxConcurrent: 2,
     throttleProgress: .milliseconds(500))
   )
+}
+
+@MainActor
+class ViewModel: ObservableObject {
+  private let disposeBag = DisposeBag()
+  
+  private var downloader: PhDownloader { DIGraph.downloader }
 
   private static let saveDir = FileManager.default
     .urls(for: .documentDirectory, in: .userDomainMask)

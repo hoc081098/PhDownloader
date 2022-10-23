@@ -13,7 +13,7 @@ import RxRealm
 import RxAlamofire
 import Alamofire
 
-/// The command that enqueues a download request or cancel by identifier
+/// The command that enqueues a download request or cancel by identifier or cancel all.
 internal enum Command {
   case enqueue(request: PhDownloadRequest)
   case cancel(identifier: String)
@@ -31,9 +31,16 @@ internal final class RealDownloader: PhDownloader {
   private let disposeBag = DisposeBag()
 
   // MARK: Schedulers
-  private let throttleScheduler = SerialDispatchQueueScheduler(qos: .utility)
+
+  /// Safe because we always access it in main queue
+  private lazy var throttleScheduler = SerialDispatchQueueScheduler(
+    qos: .userInitiated,
+    internalSerialQueueName: "com.hoc081098.ph_downloader.throttle.serial-queue"
+  )
   private static var mainScheduler: MainScheduler { .instance }
   private static var concurrentMainScheduler: ConcurrentMainScheduler { .instance }
+
+  // MARK: Initializer
 
   internal init(options: PhDownloaderOptions, dataSource: LocalDataSource) {
     self.options = options
@@ -102,7 +109,7 @@ internal final class RealDownloader: PhDownloader {
 
         // check already cancelled before
         guard let task = try dataSource.getOptional(by: request.identifier), task.canDownload else {
-          print("[PhDownloader] Task with identifier: \(request.identifier) does not exist or cancelled")
+          print("[PhDownloader] [DEBUG] Task with identifier: \(request.identifier) does not exist or be cancelled")
           return .empty()
         }
 
@@ -113,6 +120,10 @@ internal final class RealDownloader: PhDownloader {
             [.createIntermediateDirectories, .removePreviousFile]
           )
         }
+        
+        #if DEBUG
+        MainScheduler.ensureExecutingOnScheduler()
+        #endif
 
         // Is task completed naturally
         var isCompleted = false
@@ -121,15 +132,33 @@ internal final class RealDownloader: PhDownloader {
           .download(urlRequest, to: destination)
           .flatMap { $0.rx.progress() }
           .observe(on: Self.mainScheduler)
-          .do(onCompleted: { isCompleted = true })
+          .do(
+            onCompleted: {
+              #if DEBUG
+              MainScheduler.ensureExecutingOnScheduler()
+              #endif
+
+              isCompleted = true
+            }
+          )
           .take(until: self.cancelCommand(for: request.identifier))
           .throttle(self.options.throttleProgress, latest: true, scheduler: self.throttleScheduler)
           .distinctUntilChanged()
           .materialize()
           .observe(on: Self.mainScheduler)
-          .map { (state: $0.asDownloadState(isCompleted), error: $0.error) }
+            .map { progress -> (state: PhDownloadState, error: Error?) in
+            #if DEBUG
+            MainScheduler.ensureExecutingOnScheduler()
+            #endif
+            
+            return (progress.asDownloadState(isCompleted), progress.error)
+          }
           .do(
             onNext: { (state, error) in
+              #if DEBUG
+              MainScheduler.ensureExecutingOnScheduler()
+              #endif
+
               if case .completed = state {
                 downloadResultS.accept(.success(request))
               }
@@ -150,7 +179,7 @@ internal final class RealDownloader: PhDownloader {
           .asCompletable()
       }
       .catch { error in
-        print("[PhDownloader] Unhandle error: \(error)")
+        print("[PhDownloader] [ERROR] Unhandled error: \(error)")
         return .empty()
       }
       .subscribe(on: Self.concurrentMainScheduler)

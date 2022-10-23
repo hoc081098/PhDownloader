@@ -23,7 +23,10 @@ final internal class RealLocalDataSource: LocalDataSource {
   private let realmInitializer: RealmInitializer
 
   /// DispatchQueue that is used to dispatch blocks that updated realm `Object`
-  private let realmDispatchQueue = DispatchQueue(label: "RealLocalDataSource.realm.serial-queue")
+  private let realmDispatchQueue = DispatchQueue(
+    label: "com.hoc081098.ph_downloader.realm.serial-queue",
+    qos: .userInitiated
+  )
 
   init(realmInitializer: @escaping RealmInitializer) {
     self.realmInitializer = realmInitializer
