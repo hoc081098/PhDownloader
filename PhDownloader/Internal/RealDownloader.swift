@@ -177,7 +177,6 @@ internal final class RealDownloader: PhDownloader {
               }
             }
           )
-          .debug("EXECUTE_DOWNLOAD")
           .concatMap { (state, _) -> Completable in
             dataSource.update(
               id: request.identifier,
