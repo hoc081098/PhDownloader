@@ -320,7 +320,7 @@ extension RealDownloader {
           return .empty()
         }
       }
-      .onSubscribed(send: .cancelAll, in: self)
+      .onSubscribed(send: .cancel(identifier: identifier), in: self)
   }
 }
 
