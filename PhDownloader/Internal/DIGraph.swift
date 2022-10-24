@@ -10,24 +10,33 @@ import Foundation
 import Realm
 import RealmSwift
 
+/// - Throws: `PhDownloaderError.notFound` or `PhDownloaderError.databaseError`.
+internal typealias RealmInitializer = () throws -> RealmAdapter
+
 internal enum DIGraph {
-  private static let downloadPath = "hoc081098_PhDownloader"
+  private static let phDownloaderPath = "hoc081098_PhDownloader"
   private static let realmFilePath = "phdownloader_default.realm"
-  private static var fileManager: FileManager { FileManager.default }
-  
+  private static var fileManager: FileManager { .default }
+
+  /// - Throws: `PhDownloaderError.notFound` if not found.
   internal static func providePhDownloaderDirectory() throws -> URL {
     let url = Self.fileManager
       .urls(for: .documentDirectory, in: .userDomainMask)
       .first!
-      .appendingPathComponent(Self.downloadPath, isDirectory: true)
+      .appendingPathComponent(Self.phDownloaderPath, isDirectory: true)
 
     if !Self.fileManager.fileExists(atPath: url.path) {
-      try Self.fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+      do {
+        try Self.fileManager.createDirectory(at: url, withIntermediateDirectories: true)
+      } catch {
+        throw PhDownloaderError.fileDeletingError(error)
+      }
     }
 
     return url
   }
   
+  /// - Throws: `PhDownloaderError.notFound` or `PhDownloaderError.databaseError`.
   internal static func provideRealmAdapter() throws -> RealmAdapter {
     let fileURL = try Self.providePhDownloaderDirectory()
       .appendingPathComponent(Self.realmFilePath)
@@ -50,23 +59,24 @@ internal enum DIGraph {
       }
     )
 
-    return try Realm(configuration: configuration)
+    do {
+      return try Realm(configuration: configuration)
+    } catch {
+      throw PhDownloaderError.databaseError(error)
+    }
   }
   
   internal static func prodiveLocalDataSource(options: PhDownloaderOptions) -> LocalDataSource {
-    let queue = OperationQueue()
-    queue.maxConcurrentOperationCount = options.maxConcurrent * 2
-
     return RealLocalDataSource(
-      realmInitializer: Self.provideRealmAdapter,
-      queue: queue
+      realmInitializer: Self.provideRealmAdapter
     )
   }
   
   internal static func providePhDownloader(options: PhDownloaderOptions) -> PhDownloader {
     RealDownloader(
       options: options,
-      dataSource: Self.prodiveLocalDataSource(options: options)
+      dataSource: Self.prodiveLocalDataSource(options: options),
+      fileManager: Self.fileManager
     )
   }
 }

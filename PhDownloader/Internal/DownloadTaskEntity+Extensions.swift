@@ -26,6 +26,7 @@ extension DownloadTaskEntity {
       case .undefined, .enqueued:
         return true
       case .downloading, .completed, .failed, .cancelled:
+        // cannot transition from .cancelled to finished states or .cancelled itself.
         return false
       }
     }

@@ -15,14 +15,19 @@ struct Item {
   var state: PhDownloadState
 }
 
-@MainActor
-class ViewModel: ObservableObject {
-  private let disposeBag = DisposeBag()
-
-  private let downloader: PhDownloader = PhDownloaderFactory.makeDownloader(with: .init(
+enum DIGraph {
+  // Singleton
+  static let downloader: PhDownloader = PhDownloaderFactory.makeDownloader(with: .init(
     maxConcurrent: 2,
     throttleProgress: .milliseconds(500))
   )
+}
+
+@MainActor
+class ViewModel: ObservableObject {
+  private let disposeBag = DisposeBag()
+  
+  private var downloader: PhDownloader { DIGraph.downloader }
 
   private static let saveDir = FileManager.default
     .urls(for: .documentDirectory, in: .userDomainMask)
@@ -92,10 +97,10 @@ class ViewModel: ObservableObject {
   
   func removeAll() {
     self.downloader
-      .removeAll()
+      .removeAllAndDeleteFiles()
       .subscribe(
-        onCompleted: { print("[Cancel all] Success") },
-        onError: { print("[Cancel all] Failure: error=\($0)") }
+        onCompleted: { print("[Remove all] Success") },
+        onError: { print("[Remove all] Failure: error=\($0)") }
       )
       .disposed(by: self.disposeBag)
   }
@@ -115,7 +120,7 @@ class ViewModel: ObservableObject {
 
     case .completed:
       self.downloader
-        .remove(identifier: id)
+        .removeAndDeleteFile(by: id)
         .subscribe(
           onCompleted: { print("[Remove] Success: id=\(id)") },
           onError: { print("[Remove] Failure: id=\(id), error=\($0)") }

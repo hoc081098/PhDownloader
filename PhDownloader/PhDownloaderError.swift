@@ -25,6 +25,9 @@ public enum PhDownloaderError: Error, CustomDebugStringConvertible {
 
   /// Error when deleting file
   case fileDeletingError(Error)
+  
+  /// Error when creating file(s) or directory
+  case fileCreatingError(Error)
 
   public var debugDescription: String {
     switch self {
@@ -38,6 +41,8 @@ public enum PhDownloaderError: Error, CustomDebugStringConvertible {
       return "Cannot cancel task with identifier: \(identifier). Because state of task is finish (completed, failed or cancelled) or undefined."
     case .fileDeletingError(let error):
       return "File deleting error: \(error)."
+    case .fileCreatingError(let error):
+      return "File creating error: \(error)."
     }
   }
 }

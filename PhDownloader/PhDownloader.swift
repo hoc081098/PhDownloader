@@ -12,6 +12,8 @@ import RxSwift
 // MARK: - PhDownloader
 
 public protocol PhDownloader {
+  // MARK: Observer
+  
   /// Observe state of download task by id
   /// - Parameter identifier: request id
   /// - Returns: an `Observable` that emits nil if task does not exist, otherwise it will emit the download task.
@@ -27,8 +29,12 @@ public protocol PhDownloader {
   /// [PhDownloadResult](x-source-tag://PhDownloadResult)
   var downloadResult$: Observable<PhDownloadResult> { get }
 
+  // MARK: Enqueue
+
   /// Enqueue a download request
   func enqueue(_ request: PhDownloadRequest) -> Completable
+
+  // MARK: Cancel (also delete files)
 
   /// Cancel enqueued and running download task by identifier
   func cancel(by identifier: String) -> Completable
@@ -36,10 +42,12 @@ public protocol PhDownloader {
   /// Cancel all enqueued and running download tasks
   func cancelAll() -> Completable
 
+  // MARK: Remove (and delete files)
+
   /// Delete a download task from database.
   /// If the given task is running, it is canceled as well.
   /// If the task is completed and result from invoking `deleteFile` is true, the downloaded file will be deleted.
-  func remove(identifier: String, deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable
+  func remove(by identifier: String, and deleteFile: @escaping (PhDownloadTask) -> Bool) -> Completable
 
   /// Delete all tasks from database.
   /// Canceled all running tasks.
@@ -51,14 +59,14 @@ extension PhDownloader {
   /// Delete a download task from database.
   /// If the given task is running, it is canceled as well.
   /// If the task is completed, the downloaded file will be deleted.
-  public func remove(identifier: String) -> Completable {
-    self.remove(identifier: identifier) { _ in true }
+  public func removeAndDeleteFile(by identifier: String) -> Completable {
+    self.remove(by: identifier) { _ in true }
   }
 
   /// Delete all tasks from database.
   /// Canceled all running tasks.
-  /// If the task is completed, the downloaded file will be deleted.
-  public func removeAll() -> Completable {
+  /// If the task is completed, the downloaded files will be deleted.
+  public func removeAllAndDeleteFiles() -> Completable {
     self.removeAll { _ in true }
   }
 }
