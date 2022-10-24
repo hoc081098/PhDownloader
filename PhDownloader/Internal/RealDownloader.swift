@@ -111,7 +111,8 @@ internal final class RealDownloader: PhDownloader {
   /// - Returns: a Completable that always completed
   private func executeDownload(_ request: PhDownloadRequest) -> Completable {
     Completable
-      .deferred { [downloadResultS, dataSource] () -> Completable in
+      .deferred { [weak self, downloadResultS, dataSource] () -> Completable in
+        guard let self = self else { return .empty() }
 
         // check already cancelled before
         guard let task = try dataSource.getOptional(by: request.identifier), task.canDownload else {
