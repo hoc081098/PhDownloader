@@ -138,7 +138,7 @@ final internal class RealLocalDataSource: LocalDataSource {
   }
 
   func getResults(by ids: Set<String>) throws -> Results<DownloadTaskEntity> {
-    MainScheduler.ensureExecutingOnScheduler()
+    MainScheduler.ensureRunningOnMainThread()
     
     return try self.getRefreshedRealmAdapter()
       .objects(DownloadTaskEntity.self)
@@ -146,7 +146,7 @@ final internal class RealLocalDataSource: LocalDataSource {
   }
 
   func getResults(by id: String) throws -> Results<DownloadTaskEntity> {
-    MainScheduler.ensureExecutingOnScheduler()
+    MainScheduler.ensureRunningOnMainThread()
 
     return try self.getRefreshedRealmAdapter()
       .objects(DownloadTaskEntity.self)
@@ -154,7 +154,7 @@ final internal class RealLocalDataSource: LocalDataSource {
   }
 
   func get(by id: String) throws -> DownloadTaskEntity {
-    MainScheduler.ensureExecutingOnScheduler()
+    MainScheduler.ensureRunningOnMainThread()
     
     return try self.getRefreshedRealmAdapter().findDownloadTaskEntity(by: id)
   }

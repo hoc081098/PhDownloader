@@ -128,7 +128,7 @@ internal final class RealDownloader: PhDownloader {
         }
         
         #if DEBUG
-        MainScheduler.ensureExecutingOnScheduler()
+        MainScheduler.ensureRunningOnMainThread()
         #endif
 
         // Is task completed naturally
@@ -141,7 +141,7 @@ internal final class RealDownloader: PhDownloader {
           .do(
             onCompleted: {
               #if DEBUG
-              MainScheduler.ensureExecutingOnScheduler()
+              MainScheduler.ensureRunningOnMainThread()
               #endif
 
               isCompleted = true
@@ -154,7 +154,7 @@ internal final class RealDownloader: PhDownloader {
           .observe(on: Schedulers.mainScheduler)
           .map { progress -> (state: PhDownloadState, error: Error?) in
             #if DEBUG
-            MainScheduler.ensureExecutingOnScheduler()
+            MainScheduler.ensureRunningOnMainThread()
             #endif
             
             return (progress.asDownloadState(isCompleted), progress.error)
@@ -162,7 +162,7 @@ internal final class RealDownloader: PhDownloader {
           .do(
             onNext: { (state, error) in
               #if DEBUG
-              MainScheduler.ensureExecutingOnScheduler()
+              MainScheduler.ensureRunningOnMainThread()
               #endif
 
               if case .completed = state {
@@ -209,7 +209,7 @@ internal final class RealDownloader: PhDownloader {
     print("[PhDownloader] [DEBUG] send command=\(command), thread=\(Thread.current), queue=\(currentDispatchQueueLabel())")
 
     #if DEBUG
-    MainScheduler.ensureExecutingOnScheduler()
+    MainScheduler.ensureRunningOnMainThread()
     #endif
     
     self.commandS.accept(command)
