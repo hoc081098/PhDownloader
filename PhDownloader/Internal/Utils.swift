@@ -55,15 +55,17 @@ extension Event where Element == RxProgress {
   }
 }
 
-internal func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask) -> Bool) throws {
-  let url = task.request.savedDir.appendingPathComponent(task.request.fileName)
+extension FileManager {
+  internal func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask) -> Bool) throws {
+    let url = task.request.savedDir.appendingPathComponent(task.request.fileName)
 
-  do {
-    if deleteFile(task), FileManager.default.fileExists(atPath: url.path) {
-      try FileManager.default.removeItem(at: url)
+    do {
+      if deleteFile(task), self.fileExists(atPath: url.path) {
+        try self.removeItem(at: url)
+      }
+    } catch {
+      throw PhDownloaderError.fileDeletingError(error)
     }
-  } catch {
-    throw PhDownloaderError.fileDeletingError(error)
   }
 }
 
@@ -92,4 +94,8 @@ internal final class SafeBooleanDisposable: Cancelable {
 
     self.disposed = true
   }
+}
+
+internal func currentDispatchQueueLabel() -> String {
+  .init(cString: __dispatch_queue_get_label(nil))
 }

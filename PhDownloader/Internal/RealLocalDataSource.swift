@@ -90,6 +90,11 @@ final internal class RealLocalDataSource: LocalDataSource {
         print("[PhDownloader] [DEBUG] cannot transition from \(task.phDownloadState) to \(state)")
         return
       }
+      
+      if state == .cancelled, !task.canCancel {
+        print("[PhDownloader] [DEBUG] cannot cancel \(id), task.state=\(task.phDownloadState)")
+        throw PhDownloaderError.cannotCancel(identifier: id)
+      }
 
       try checkDisposed()
 
