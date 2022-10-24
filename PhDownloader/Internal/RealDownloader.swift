@@ -293,7 +293,7 @@ extension RealDownloader {
     // and then, mask task as cancelled to prevent executing enqueued task
     self.dataSource
       .update(id: identifier, state: .cancelled)
-      .onSubscribed(send: .cancelAll, in: self)
+      .onSubscribed(send: .cancel(identifier: identifier), in: self)
   }
 }
 
