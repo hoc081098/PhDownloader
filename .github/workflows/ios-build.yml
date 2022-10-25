@@ -3,10 +3,10 @@ name: iOS Build CI
 on:
   push:
     branches: [ master ]
-    paths-ignore: [ '**.md', '**.MD', 'PhDownloader/PhDownloader Example/**' ]
+    paths-ignore: [ '**.md', '**.MD', 'PhDownloader Example/**' ]
   pull_request:
     branches: [ master ]
-    paths-ignore: [ '**.md', '**.MD', 'PhDownloader/PhDownloader Example/**' ]
+    paths-ignore: [ '**.md', '**.MD', 'PhDownloader Example/**' ]
   workflow_dispatch:
 
 
