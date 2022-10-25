@@ -14,8 +14,7 @@ extension PhDownloadTask {
       request: .init(
         identifier: entity.identifier,
         url: URL(string: entity.url)!,
-        fileName: entity.fileName,
-        savedDir: URL(fileURLWithPath: entity.savedDir)
+        destinationURL: URL(fileURLWithPath: entity.destinationURL)
       ),
       state: entity.phDownloadState
     )

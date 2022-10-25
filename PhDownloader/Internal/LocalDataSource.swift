@@ -20,8 +20,7 @@ internal protocol LocalDataSource {
   func insertOrUpdate(
     identifier: String,
     url: URL,
-    fileName: String,
-    savedDir: URL,
+    destinationURL: URL,
     state: PhDownloadState
   ) -> Completable
 

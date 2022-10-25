@@ -123,7 +123,7 @@ internal final class RealDownloader: PhDownloader {
         let urlRequest = URLRequest(url: request.url)
         let destination: DownloadRequest.Destination = { (temporaryURL, response) in
           (
-            request.savedDir.appendingPathComponent(request.fileName),
+            request.destinationURL,
             [.createIntermediateDirectories, .removePreviousFile]
           )
         }
@@ -278,8 +278,7 @@ extension RealDownloader {
       .insertOrUpdate(
         identifier: request.identifier,
         url: request.url,
-        fileName: request.fileName,
-        savedDir: request.savedDir,
+        destinationURL: request.destinationURL,
         state: .enqueued
       )
       .onCompleted(send: .enqueue(request: request), in: self)

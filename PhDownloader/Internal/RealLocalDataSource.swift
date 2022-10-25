@@ -112,8 +112,7 @@ final internal class RealLocalDataSource: LocalDataSource {
   func insertOrUpdate(
     identifier: String,
     url: URL,
-    fileName: String,
-    savedDir: URL,
+    destinationURL: URL,
     state: PhDownloadState
   ) -> Completable {
     useRealmAdapter { realm, checkDisposed in
@@ -123,8 +122,7 @@ final internal class RealLocalDataSource: LocalDataSource {
             DownloadTaskEntity(
               identifier: identifier,
               url: url,
-              fileName: fileName,
-              savedDir: savedDir,
+              destinationURL: destinationURL,
               state: state,
               updatedAt: .init()
             ),
