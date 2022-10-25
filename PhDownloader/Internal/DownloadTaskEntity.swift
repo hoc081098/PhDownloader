@@ -11,18 +11,16 @@ import Realm
 import RealmSwift
 
 internal final class DownloadTaskEntity: Object {
-  @objc dynamic var identifier: String = ""
-  @objc dynamic var url: String = ""
-  @objc dynamic var destinationURL: String = ""
-  @objc dynamic var updatedAt: Date = .init()
+  @Persisted(primaryKey: true) var identifier: String = ""
+  @Persisted var url: String = ""
+  @Persisted var destinationURL: String = ""
+  @Persisted var updatedAt: Date = .init()
 
-  @objc private dynamic var state: RawState = .undefined
-  private dynamic var bytesWritten = RealmProperty<Int64?>()
-  private dynamic var totalBytes = RealmProperty<Int64?>()
+  @Persisted private var state: RawState = .undefined
+  @Persisted private var bytesWritten: Int64? = nil
+  @Persisted private var totalBytes: Int64? = nil
 
-  override class func primaryKey() -> String? { "identifier" }
-
-  @objc enum RawState: Int, RealmEnum {
+  enum RawState: Int, PersistableEnum {
     case undefined
     case enqueued
     case downloading
@@ -68,11 +66,11 @@ internal final class DownloadTaskEntity: Object {
   func update(to state: PhDownloadState) {
     self.state = .init(from: state)
     if case .downloading(let bytesWritten, let totalBytes, _) = state {
-      self.bytesWritten.value = bytesWritten
-      self.totalBytes.value = totalBytes
+      self.bytesWritten = bytesWritten
+      self.totalBytes = totalBytes
     } else {
-      self.bytesWritten.value = nil
-      self.totalBytes.value = nil
+      self.bytesWritten = nil
+      self.totalBytes = nil
     }
   }
 
@@ -83,8 +81,8 @@ internal final class DownloadTaskEntity: Object {
     case .enqueued:
       return .enqueued
     case .downloading:
-      let bytesWritten = self.bytesWritten.value!
-      let totalBytes = self.totalBytes.value!
+      let bytesWritten = self.bytesWritten!
+      let totalBytes = self.totalBytes!
 
       return .downloading(
         bytesWritten: bytesWritten,
