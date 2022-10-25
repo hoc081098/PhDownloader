@@ -35,7 +35,7 @@ internal enum DIGraph {
 
     return url
   }
-  
+
   /// - Throws: `PhDownloaderError.notFound` or `PhDownloaderError.databaseError`.
   internal static func provideRealmAdapter() throws -> RealmAdapter {
     let fileURL = try Self.providePhDownloaderDirectory()
@@ -45,16 +45,25 @@ internal enum DIGraph {
       fileURL: fileURL,
       // Set the new schema version. This must be greater than the previously used
       // version (if you've never set a schema version before, the version is 0).
-      schemaVersion: 1,
+      schemaVersion: 2,
 
       // Set the block which will be called automatically when opening a Realm with
       // a schema version lower than the one set above
       migrationBlock: { migration, oldSchemaVersion in
         // We haven’t migrated anything yet, so oldSchemaVersion == 0
-        if (oldSchemaVersion < 1) {
+        if oldSchemaVersion < 1 {
           // Nothing to do!
           // Realm will automatically detect new properties and removed properties
           // And will update the schema on disk automatically
+        }
+        if oldSchemaVersion < 2 {
+          migration.enumerateObjects(ofType: DownloadTaskEntity.className()) { oldObject, newObject in
+            let fileName = oldObject!["fileName"] as! String
+            let savedDir = oldObject!["savedDir"] as! String
+            newObject!["destinationURL"] = URL(fileURLWithPath: savedDir).appendingPathComponent(fileName).path
+
+            print("[PhDownloader] [DEBUG] Migrated: \(newObject!["destinationURL"]!)")
+          }
         }
       }
     )
@@ -65,13 +74,13 @@ internal enum DIGraph {
       throw PhDownloaderError.databaseError(error)
     }
   }
-  
+
   internal static func prodiveLocalDataSource(options: PhDownloaderOptions) -> LocalDataSource {
     return RealLocalDataSource(
       realmInitializer: Self.provideRealmAdapter
     )
   }
-  
+
   internal static func providePhDownloader(options: PhDownloaderOptions) -> PhDownloader {
     RealDownloader(
       options: options,

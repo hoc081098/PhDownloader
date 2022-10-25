@@ -13,8 +13,7 @@ import RealmSwift
 internal final class DownloadTaskEntity: Object {
   @objc dynamic var identifier: String = ""
   @objc dynamic var url: String = ""
-  @objc dynamic var fileName: String = ""
-  @objc dynamic var savedDir: String = ""
+  @objc dynamic var destinationURL: String = ""
   @objc dynamic var updatedAt: Date = .init()
 
   @objc private dynamic var state: RawState = .undefined
@@ -53,16 +52,14 @@ internal final class DownloadTaskEntity: Object {
   convenience init(
     identifier: String,
     url: URL,
-    fileName: String,
-    savedDir: URL,
+    destinationURL: URL,
     state: PhDownloadState,
     updatedAt: Date
   ) {
     self.init()
     self.identifier = identifier
     self.url = url.absoluteString
-    self.fileName = fileName
-    self.savedDir = savedDir.path
+    self.destinationURL = destinationURL.path
     self.updatedAt = updatedAt
     self.update(to: state)
   }

@@ -40,8 +40,7 @@ class ViewModel: ObservableObject {
         request: .init(
           identifier: String(i),
           url: URL(string: "https://file-examples.com/storage/fe4b4c6261634c76e91986b/2017/04/file_example_MP4_1920_18MG.mp4")!,
-          fileName: "test_file_\(i).mp4",
-          savedDir: Self.saveDir
+          destinationURL: Self.saveDir.appendingPathComponent("test_file_\(i).mp4")
         ),
         state: .undefined
       )
@@ -140,7 +139,7 @@ class ViewModel: ObservableObject {
   
   func onLongPress(item: Item) {
     if (item.state == .completed) {
-      let url = item.request.savedDir.appendingPathComponent(item.request.fileName)
+      let url = item.request.destinationURL
       if FileManager.default.fileExists(atPath: url.path) {
         print("Good: \(item.request.identifier) - \(url)")
       } else {

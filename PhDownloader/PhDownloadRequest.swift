@@ -17,21 +17,16 @@ public struct PhDownloadRequest: Hashable {
   /// The download url
   public let url: URL
 
-  /// The local file name of downloaded file
-  public let fileName: String
-
-  /// The directory where the downloaded file is saved
-  public let savedDir: URL
+  /// The local file URL where the downloaded file will be saved
+  public let destinationURL: URL
 
   public init(
     identifier: String,
     url: URL,
-    fileName: String,
-    savedDir: URL
+    destinationURL: URL
   ) {
     self.identifier = identifier
     self.url = url
-    self.fileName = fileName
-    self.savedDir = savedDir
+    self.destinationURL = destinationURL
   }
 }
