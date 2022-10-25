@@ -137,4 +137,15 @@ class ViewModel: ObservableObject {
         .disposed(by: self.disposeBag)
     }
   }
+  
+  func onLongPress(item: Item) {
+    if (item.state == .completed) {
+      let url = item.request.savedDir.appendingPathComponent(item.request.fileName)
+      if FileManager.default.fileExists(atPath: url.path) {
+        print("Good: \(item.request.identifier) - \(url)")
+      } else {
+        fatalError("\(url) does not exists")
+      }
+    }
+  }
 }

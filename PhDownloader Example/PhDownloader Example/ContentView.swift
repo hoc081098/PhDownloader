@@ -13,6 +13,7 @@ import RxSwift
 struct ItemRow: View {
   let item: Item
   let onTapItem: () -> Void
+  let onLongPress: () -> Void
   
   var body: some View {
     VStack(alignment: .leading, spacing: 3) {
@@ -23,7 +24,9 @@ struct ItemRow: View {
       Text("State: \(item.state.debugDescription)")
         .foregroundColor(color(for: item.state))
         .font(.subheadline)
-    }.onTapGesture { onTapItem() }
+    }
+    .onTapGesture { onTapItem() }
+    .onLongPressGesture(perform: onLongPress)
   }
 }
 
@@ -49,7 +52,8 @@ struct ContentView: View {
         ForEach(self.viewModel.items, id: \.request.identifier) { item in
           ItemRow(
             item: item,
-            onTapItem: { self.viewModel.onTap(item: item) }
+            onTapItem: { self.viewModel.onTap(item: item) },
+            onLongPress: { self.viewModel.onLongPress(item: item) }
           )
         }
       }
