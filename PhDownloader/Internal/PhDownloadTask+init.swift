@@ -11,11 +11,9 @@ import Foundation
 extension PhDownloadTask {
   internal init(from entity: DownloadTaskEntity) {
     self.init(
-      request: .init(
-        identifier: entity.identifier,
-        url: URL(string: entity.url)!,
-        destinationURL: URL(fileURLWithPath: entity.destinationURL)
-      ),
+      identifier: entity.identifier,
+      url: URL(string: entity.url)!,
+      destinationURL: URL(fileURLWithPath: entity.destinationURL),
       state: entity.phDownloadState
     )
   }

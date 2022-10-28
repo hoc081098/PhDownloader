@@ -57,7 +57,7 @@ extension Event where Element == RxProgress {
 
 extension FileManager {
   internal func removeFile(of task: PhDownloadTask, _ deleteFile: (PhDownloadTask) -> Bool) throws {
-    let url = task.request.destinationURL
+    let url = task.destinationURL
 
     do {
       if deleteFile(task), self.fileExists(atPath: url.path) {
