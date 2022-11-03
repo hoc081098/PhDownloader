@@ -12,7 +12,7 @@
 
 - iOS deployment target to `11.0`.
 
-- `PhDownloadRequest`: merge `savedDir` with `fileName` to `destinationURL`.
+- `PhDownloadRequest`: merged `savedDir` with `fileName` to `destinationURL`.
 - `PhDownloadTask`: embedded `PhDownloadRequest`'s fields.
 - `PhDownloader`: rename and change signatures
     - `remove(identifier:deleteFile:)` to `remove(by:and:)`.
