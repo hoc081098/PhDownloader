@@ -1,14 +1,14 @@
 Pod::Spec.new do |spec|
   spec.name         = "PhDownloader"
-  spec.version      = "0.6.0"
-  spec.summary      = "Simple, reactive and functional downloader for iOS Swift with the power of RxSwift, RxAlamofire"
+  spec.version      = '0.7.0'
+  spec.summary      = "Petrus Hoc's Downloader - Simple, reactive and functional downloader for iOS Swift with the power of RxSwift, RxAlamofire"
   spec.homepage     = "https://github.com/hoc081098/PhDownloader"
   spec.license      = { :type => "MIT", :file => "LICENSE" }
   spec.author             = { "Petrus Nguyễn Thái Học" => "hoc081098@gmail.com" }
   spec.social_media_url   = "https://twitter.com/hoc081098"
 
   spec.platform     = :ios
-  spec.ios.deployment_target = "10.0"
+  spec.ios.deployment_target = "11.0"
   spec.swift_version = "5.1"
   spec.source       = { :git => "https://github.com/hoc081098/PhDownloader.git", :tag => "#{spec.version}" }
 
