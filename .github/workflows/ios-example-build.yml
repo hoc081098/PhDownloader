@@ -44,7 +44,7 @@ jobs:
         run: pod install
 
       - name: Build
-        uses: sersoft-gmbh/xcodebuild-action@v2.0.1
+        uses: sersoft-gmbh/xcodebuild-action@v2.1.0
         with:
           workspace: "PhDownloader Example/PhDownloader Example.xcworkspace"
           scheme: "PhDownloader Example"
