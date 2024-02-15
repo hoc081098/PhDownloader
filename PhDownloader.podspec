@@ -20,8 +20,8 @@ Pod::Spec.new do |spec|
   spec.dependency 'RxAlamofire', '~> 6.1'
   spec.dependency 'RxSwift', '~> 6.5'
   spec.dependency 'RxRelay', '~> 6.5'
-  spec.dependency 'Realm', '~> 10.32'
-  spec.dependency 'RealmSwift', '~> 10.32'
+  spec.dependency 'Realm', '~> 10.40.1'
+  spec.dependency 'RealmSwift', '~> 10.40.1'
   # FIXME https://github.com/RxSwiftCommunity/RxRealm/issues/201
   spec.dependency 'RxRealm', '~> 5.0.6'
 end
