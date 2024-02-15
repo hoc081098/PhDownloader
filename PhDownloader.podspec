@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
   spec.social_media_url   = "https://twitter.com/hoc081098"
 
   spec.platform     = :ios
-  spec.ios.deployment_target = "11.0"
+  spec.ios.deployment_target = "12.0"
   spec.swift_version = "5.1"
   spec.source       = { :git => "https://github.com/hoc081098/PhDownloader.git", :tag => "#{spec.version}" }
 
