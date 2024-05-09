@@ -10,7 +10,7 @@ target 'PhDownloader' do
   pod 'Realm', '~> 10.40.1', :modular_headers => true
   pod 'RealmSwift', '~> 10.40.1'
   # FIXME https://github.com/RxSwiftCommunity/RxRealm/issues/201
-  pod 'RxRealm', :git => 'https://github.com/RxSwiftCommunity/RxRealm.git', :tag => 'vv5.1.0'
+  pod 'RxRealm', '~> 5.1.0'
 
   target 'PhDownloaderTests' do
   end
