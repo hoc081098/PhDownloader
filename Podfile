@@ -8,7 +8,7 @@ target 'PhDownloader' do
   pod 'RxRelay', '~> 6.5'
   
   pod 'Realm', '~> 10.40.1', :modular_headers => true
-  pod 'RealmSwift', '~> 10.40.1'
+  pod 'RealmSwift', '~> 10.54.0'
   # FIXME https://github.com/RxSwiftCommunity/RxRealm/issues/201
   pod 'RxRealm', :git => 'https://github.com/RxSwiftCommunity/RxRealm.git', :tag => 'v5.0.6'
 
